@@ -1,0 +1,26 @@
+server:
+  port: 80
+
+spring:
+  datasource:
+    url:
+    driver-class-name:
+    username:
+    password:
+  jpa:
+    show-sql: true
+  redis:
+    host:
+    port:
+    database:
+    password:
+    timeout: 500ms
+
+    jedis:
+      pool:
+        max-idle: 8
+        min-idle: 2
+        max-active: 8
+        max-wait: 10000ms
+mybatis:
+  type-aliases-package: team.redrock.prize.bean
