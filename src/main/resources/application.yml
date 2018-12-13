@@ -24,3 +24,6 @@ spring:
         max-wait: 10000ms
 mybatis:
   type-aliases-package: team.redrock.prize.bean
+
+
+prjPath: AcceptPrize/

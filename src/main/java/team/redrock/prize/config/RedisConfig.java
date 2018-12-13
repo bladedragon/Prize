@@ -13,34 +13,37 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
+import java.net.UnknownHostException;
+
 @Configuration
-@EnableAutoConfiguration
 public class RedisConfig {
 
+
     @Bean
-    public RedisTemplate<Object, Object> redisTemplate(RedisConnectionFactory connectionFactory) {
-        RedisTemplate<Object, Object> template = new RedisTemplate<>();
-        template.setConnectionFactory(connectionFactory);
-
-        //使用Jackson2JsonRedisSerializer来序列化和反序列化redis的value值（默认使用JDK的序列化方式）
-        Jackson2JsonRedisSerializer serializer = new Jackson2JsonRedisSerializer(Object.class);
-
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
-        mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
-        serializer.setObjectMapper(mapper);
-
-        template.setValueSerializer(serializer);
-        //使用StringRedisSerializer来序列化和反序列化redis的key值
-        template.setKeySerializer(new StringRedisSerializer());
-        template.afterPropertiesSet();
+    public RedisTemplate<Object, Object> objectRedisTemplate(
+            RedisConnectionFactory redisConnectionFactory) {
+        RedisTemplate<Object, Object> template = new RedisTemplate<Object, Object>();
+        template.setConnectionFactory(redisConnectionFactory);
+        //使用json的序列化器
+        Jackson2JsonRedisSerializer ser = new Jackson2JsonRedisSerializer<Object>(Object.class);
+//        JdkSerializationRedisSerializer ser = new JdkSerializationRedisSerializer();
+        template.setDefaultSerializer(ser);                 //相当于key的序列化类型和value的序列化类型
         return template;
     }
 
     @Bean
-    public StringRedisTemplate stringRedisTemplate(RedisConnectionFactory factory) {
-        StringRedisTemplate stringRedisTemplate = new StringRedisTemplate();
-        stringRedisTemplate.setConnectionFactory(factory);
-        return stringRedisTemplate;
+    public RedisTemplate<String, String> StringRedistemplate(
+            RedisConnectionFactory redisConnectionFactory) throws UnknownHostException {
+        RedisTemplate<String, String> template = new RedisTemplate<String, String>();
+        template.setConnectionFactory(redisConnectionFactory);
+        //使用json的序列化器
+        Jackson2JsonRedisSerializer ser = new Jackson2JsonRedisSerializer<String>(String.class);
+//       JdkSerializationRedisSerializer ser = new JdkSerializationRedisSerializer();
+        template.setDefaultSerializer(ser);                 //相当于key的序列化类型和value的序列化类型
+        return template;
     }
 }
+
+
+
+

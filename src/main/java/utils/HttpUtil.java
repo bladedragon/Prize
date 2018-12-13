@@ -9,7 +9,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 
 public class HttpUtil {
-    public String httpRequestToString(String path, String method, String body) throws NoSuchProviderException, NoSuchAlgorithmException {
+    public static String httpRequestToString(String path, String method, String body) throws NoSuchProviderException, NoSuchAlgorithmException {
         if (path == null || method == null) {
             return null;
         }
@@ -29,9 +29,9 @@ public class HttpUtil {
             conn.setRequestMethod(method);
 
             if (null != body) {
-                OutputStream outputStream = conn.getOutputStream();
-                outputStream.write(body.getBytes("UTF-8"));
-                outputStream.close();
+                    OutputStream outputStream = conn.getOutputStream();
+                    outputStream.write(body.getBytes("UTF-8"));
+                    outputStream.close();
 
             }
             // 将返回的输入流转换成字符串
@@ -59,7 +59,7 @@ public class HttpUtil {
                 inputStreamReader.close();
                 inputStream.close();
             } catch (IOException execption) {
-
+                execption.printStackTrace();
             }
 
         }
@@ -67,4 +67,7 @@ public class HttpUtil {
 
 
     }
+
+
+
 }

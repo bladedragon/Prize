@@ -11,6 +11,7 @@ import team.redrock.prize.pojo.response.ErrorResponse;
 public class ExceptionHandlerAdvice {
     @ExceptionHandler(ValidException.class)
     public ErrorResponse handleException(ValidException e) {
-        return new ErrorResponse("-1", e.getMessage());
+        e.printStackTrace();
+        return new ErrorResponse(-1, e.getMessage());
     }
 }

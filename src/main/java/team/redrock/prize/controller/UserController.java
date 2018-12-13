@@ -21,14 +21,17 @@ public class UserController {
     @PostMapping(value = "/login")
     public UserResponse userLogin(@RequestParam(defaultValue = "") String username, @RequestParam(defaultValue = "") String password, HttpServletRequest request, HttpServletResponse response) throws ValidException {
 
+
         UserResponse userResponse = userService.Login(username,password,request,response);
-        String status = userResponse.getStatus();
+        int status = userResponse.getStatus();
         switch(status){
-            case "-1":
+            case -1:
                 throw new ValidException("Username checks invalid");
-            case  "-2":
+            case  -2:
                 throw new ValidException("Password cannot be null");
-            case  "-3":
+            case  -3:
+                throw new ValidException("Username doesn't exist");
+            case  -4:
                 throw new ValidException("Password checks invalid");
             default:
                 break;

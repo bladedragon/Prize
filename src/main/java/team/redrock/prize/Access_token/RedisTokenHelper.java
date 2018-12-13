@@ -3,17 +3,20 @@ package team.redrock.prize.Access_token;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 import java.util.concurrent.TimeUnit;
 
-@Repository
+@Component
 public class RedisTokenHelper {
 
-    @Autowired(required = false)
+    @Autowired(required = true)
     RedisTemplate<String, String> stringRedisTemplate;
 
-    @Autowired(required = false)
+    @Autowired
     RedisTemplate<Object, Object> redisTemplate;
 
 //    @Resource(name="stringRedisTemplate")
@@ -28,8 +31,10 @@ public class RedisTokenHelper {
      * @param tokenType Token的key
      * @param Token     Token的值
      */
+
     public void save(String tokenType, String Token) {
         this.stringRedisTemplate.opsForValue().set(tokenType, Token, 180, TimeUnit.SECONDS);
+        System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
     }
 
     /**
@@ -39,7 +44,7 @@ public class RedisTokenHelper {
      * @return String
      */
     public String getToken(String tokenType) {
-        return this.stringRedisTemplate.opsForValue().get(tokenType);
+        return stringRedisTemplate.opsForValue().get(tokenType);
     }
 
     /**
@@ -69,8 +74,17 @@ public class RedisTokenHelper {
      * @param key
      */
     public String getObject(String key) {
-        String str = this.stringRedisTemplate.opsForValue().get(key);
-        System.out.println(str);
+        String str;
+        try {
+            str = this.stringRedisTemplate.opsForValue().get(key);
+            if(str==null){
+                return "1";
+            }
+        }catch(NullPointerException e){
+           // e.printStackTrace();
+            System.out.println("空指针异常");
+            return "1";
+        }
 
         return str;
     }

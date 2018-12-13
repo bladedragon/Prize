@@ -1,14 +1,13 @@
 package team.redrock.prize.pojo.response;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
-public class UserResponse {
-
+public class SendMsgResponse {
     private int status;
-    private Object data;
+    private  String info;
+    private Object FailMsg;
 }

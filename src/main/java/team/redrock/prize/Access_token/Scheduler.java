@@ -3,6 +3,7 @@ package team.redrock.prize.Access_token;
 import net.sf.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -16,8 +17,11 @@ import java.sql.SQLException;
 public class Scheduler {
 
     private Logger logger = LoggerFactory.getLogger(getClass());
-    @Resource
+    @Autowired
     RedisTokenHelper redisTokenHelper = new RedisTokenHelper();
+
+    public static final String WX_APPID = "wxaf05acd677a29f25";
+    public static final String WX_APPSECRET = "58e74928490b55bebb483fc526828bfc";
 
     /**
      * 定时获取access_token
@@ -29,8 +33,8 @@ public class Scheduler {
       // logger.info("==============开始获取access_token===============");
         String access_token = null;
         String grant_type = "client_credential";
-        String AppId = wxPropertiseUtil.getProperty("appid");
-        String secret = wxPropertiseUtil.getProperty("secret");
+        String AppId = WX_APPID;
+        String secret = WX_APPSECRET;
         String url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=" + grant_type + "&appid=" + AppId + "&secret=" + secret;
        logger.info("getUrl==>"+url);
 
@@ -50,29 +54,29 @@ public class Scheduler {
             JSONObject demoJson = JSONObject.fromObject(message);
 
             access_token = demoJson.getString("access_token");
-            logger.info("get access_token==>"+access_token);
+            //logger.info("get access_token==>"+access_token);
             is.close();
             //System.out.println("==============结束获取access_token===============");
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return access_token;
+
 //        System.out.println("==============开始写入access_token===============");
-//        redisTokenHelper.saveObject("global_token", access_token);
+        redisTokenHelper.save("global_token", access_token);
 
 //        System.out.println("==============写入access_token成功===============");
-
+        return access_token;
     }
 
     public String getAccess_Token() throws SQLException {
-        String access_token = (String) redisTokenHelper.getObject("global_token");
-        if (access_token == null) {
+        String access_token =  redisTokenHelper.getObject("global_token");
+        if (access_token.equals("1")) {
             System.out.println("获取access_token");
             getAccessToken();
             access_token = (String) redisTokenHelper.getObject("global_token");
-            System.out.println(access_token);
+            System.out.println("accesstoken"+access_token);
         }
-        return access_token;
+        return (String) access_token;
     }
 
 

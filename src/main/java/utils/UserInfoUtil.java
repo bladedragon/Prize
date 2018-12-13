@@ -1,5 +1,8 @@
 package utils;
 
+
+import team.redrock.prize.Verify.SHA1Utils;
+
 public class UserInfoUtil {
 
     // 1.获取code的请求地址
@@ -28,14 +31,24 @@ public class UserInfoUtil {
 
 
     public static void main(String[] args) {
-        String REDIRECT_URI = "http://wechat.tmqyt.com/url";
-        String SCOPE = "snsapi_login"; // snsapi_userinfo // snsapi_login
+//        String REDIRECT_URI = "http://wechat.tmqyt.com/url";
+//        String SCOPE = "snsapi_login"; // snsapi_userinfo // snsapi_login
+//
+//        //appId
+//        String appId = "wx222e322a20897ea3";
+//
+//        String getCodeUrl = getCode(appId, REDIRECT_URI, SCOPE);            sha1(sha1($timestamp).md5($string)."redrock")
+//        System.out.println("getCodeUrl:" + getCodeUrl);
 
-        //appId
-        String appId = "wx222e322a20897ea3";
+        String openid="ouRCyjtjZXSh31ArxIFOQrBj0eog";
+        String string = "asdfghjkl";
+        String timestamp = "1505118409";
+        String encodeStr = SHA1Utils.encode( SHA1Utils.encode(timestamp)+"."+SessionUtil.getMD5(string)+".redrock");
+        System.out.println(encodeStr);
 
-        String getCodeUrl = getCode(appId, REDIRECT_URI, SCOPE);
-        System.out.println("getCodeUrl:" + getCodeUrl);
+
+
+
     }
 
 }
