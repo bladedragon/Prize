@@ -1,11 +1,10 @@
-package utils;
+package team.redrock.prize.utils;
 
 
 
 import org.apache.commons.codec.binary.Base64;
 
 import java.io.UnsupportedEncodingException;
-import java.math.BigInteger;
 import java.security.MessageDigest;
 
 

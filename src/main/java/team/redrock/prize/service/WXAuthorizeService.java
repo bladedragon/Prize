@@ -4,10 +4,11 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import team.redrock.prize.bean.WXAccount;
-import utils.HttpUtil;
-import utils.UserInfoUtil;
+import team.redrock.prize.utils.HttpUtil;
+import team.redrock.prize.utils.UserInfoUtil;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
@@ -18,9 +19,12 @@ import java.util.regex.Pattern;
 @Service
 public class WXAuthorizeService {
 
-    public static final String WX_APPID = "wxaf05acd677a29f25";
-    public static final String WX_APPSECRET = "58e74928490b55bebb483fc526828bfc";
-    public static final String REDIRECT_URI= "http://47nzun.natappfree.cc";
+    @Value("${WX_APPID}")
+    private String WX_APPID;
+    @Value("${WX_APPSECRET}")
+    private String WX_APPSECRET;
+    @Value("${REDIRECT_URI}")
+    private String REDIRECT_URI;
 
     public WXAccount getWxInfo(String code,String state) throws NoSuchProviderException, NoSuchAlgorithmException {
         String userid=null;

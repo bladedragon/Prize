@@ -7,9 +7,8 @@ import org.springframework.stereotype.Service;
 import team.redrock.prize.mapper.UserMapper;
 import team.redrock.prize.bean.UserInfo;
 import team.redrock.prize.pojo.response.UserResponse;
-import utils.SessionUtil;
+import team.redrock.prize.utils.SessionUtil;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -23,8 +22,11 @@ public class UserService {
     @Autowired
     StringRedisTemplate stringRedisTemplate ;
 
-    public UserResponse Login(String username, String password, HttpServletRequest request, HttpServletResponse response){
+        public UserResponse Login(String username, String password, HttpServletRequest request, HttpServletResponse response){
         HttpSession session = request.getSession(true);
+        System.out.println("---------------------------------------------"+System.currentTimeMillis()+"-------------------------------------------------");
+
+
 
         if(IsNull(username)){
           return new UserResponse(-1,"用户名不能为空");
@@ -42,13 +44,15 @@ public class UserService {
                 return new UserResponse(-4,"密码错误！");
 
             }else{
-
-                if(stringRedisTemplate.opsForHash().get("SESSIONID",username)!=null)
+                System.out.println("---------------------------------------------"+System.currentTimeMillis()+"-------------------------------------------------");
+                long time =System.currentTimeMillis();
+                if(session.getAttribute("SESSIONID")!=null&&stringRedisTemplate.opsForHash().hasKey("SESSIONID",username))
                 {
-                   return new UserResponse(1,"你已登录");
+                       return new UserResponse(1,"你已登录");
+
                 }
                     SessionUtil sessionUtil = new SessionUtil();
-
+                System.out.println("-----------------------"+(System.currentTimeMillis()-time)+"-------------------------");
                     String usersession = sessionUtil.createSessionId(username);
                     System.out.println("创建session: "+usersession);
                     //响应添加cookie
@@ -56,15 +60,19 @@ public class UserService {
 //                    cookie.setPath(request.getContextPath());
 //                    response.addCookie(cookie);
 //                    //设置session
-
+                System.out.println("-----------------------"+(System.currentTimeMillis()-time)+"-------------------------");
                     session.setAttribute("SESSIONID",usersession);
                     session.setAttribute("SESSIONNAME",username);
 //                    session.setMaxInactiveInterval(30*60);
+                System.out.println("-----------------------"+(System.currentTimeMillis()-time)+"-------------------------");
                     stringRedisTemplate.opsForHash().put("SESSIONID",username,usersession);
                     stringRedisTemplate.expire("SESSIONID",30,TimeUnit.MINUTES);
-
+                System.out.println("-----------------------"+(System.currentTimeMillis()-time)+"-------------------------");
 //                    response.addHeader("SESSIONID",usersession);
-                    return new UserResponse(0,"登录成功");
+                System.out.println("---------------------------------------------"+System.currentTimeMillis()+"-------------------------------------------------");
+
+                return new UserResponse(0,"登录成功");
+
                 }
 
             }

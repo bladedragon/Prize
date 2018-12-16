@@ -19,15 +19,15 @@ public interface GetPrizerMapper {
     Boolean updateSpecified_type(@Param(value = "openid") String openid,@Param(value = "status") int status);
 
 
-    @Select("Select * from specified_type where (openid = #{openid}and actid = #{actid})")
-    List<StudentA> findStudentA(@Param(value = "openid") String openid, @Param(value = "actid") String actid);
+    @Select("Select * from specified_type where (openid = #{openid}and actid = #{actid}and reward =#{reward})")
+    StudentA findStudentA(@Param(value = "openid") String openid, @Param(value = "actid") String actid,@Param(value = "reward") String reward);
 
-    @Insert("Insert into non_specified_type (stuname,college,stuid,telephone,reward,actid,openid,add_time) value(#{stuname},#{college},#{stuid},#{telephone},"+
-            "#{reward},#{actid},#{openid},#{add_time}")
+    @Insert("Insert into non_specified_type (stuname,stuid,actid,openid,add_time,reward) value(#{stuname},#{stuid},"+
+            "#{actid},#{openid},#{add_time},#{reward})")
     void insertNonSpecified_type(StudentB student);
 
-    @Select("Select * from non_specified_type where openid = #{openid},activity = #{actid}")
-    StudentB findStudentB(@Param(value = "openid") String openid,@Param(value = "actid") String actid);
+    @Select("Select * from non_specified_type where openid = #{openid} and actid = #{actid}and reward = #{reward}")
+    StudentB findStudentB(@Param(value = "openid") String openid,@Param(value = "actid") String actid,@Param(value = "reward") String reward);
 
 
 

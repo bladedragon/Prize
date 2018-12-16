@@ -1,8 +1,10 @@
 package team.redrock.prize.bean;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
+@AllArgsConstructor
 public class StudentA {
 
     private String openid;
@@ -15,7 +17,7 @@ public class StudentA {
     private String reward;
     private int status;
 
-    public StudentA(String openid,String stuname, String college, String stuid,int telephone,String actid, String add_time,  String reward,int status ) {
+        public StudentA(String openid,String stuname, String stuid,String actid, String add_time,String reward) {
         this.stuname = stuname;
         this.college = college;
         this.stuid = stuid;

@@ -5,9 +5,13 @@ import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 import team.redrock.prize.bean.StudentA;
+import team.redrock.prize.bean.StudentB;
+import team.redrock.prize.exception.ValidException;
 import team.redrock.prize.mapper.SpecifiedTypeMapper;
-import team.redrock.prize.pojo.response.ShowPrizerResponse;
+import team.redrock.prize.pojo.response.ShowPrizerAResponse;
+
 
 import java.util.List;
 
@@ -18,18 +22,36 @@ public class ShowPrizerService {
     @Autowired
     SpecifiedTypeMapper specifiedTypeMapper;
 
-    public ShowPrizerResponse showPrizer(String actid,int start,int pagesize){
+    public ShowPrizerAResponse showPrizer(String actid, int type, int start, int pagesize) throws ValidException {
+        int total;
+        PageHelper.startPage(start, pagesize);
+        List<StudentA> studentAS = null;
+        List<StudentB> studentBS = null;
 
-        PageHelper.startPage(start,pagesize);
+        switch (type) {
 
-        List<StudentA> studentAS = specifiedTypeMapper.findStudentA(actid);
+            case 1:
+                studentAS = specifiedTypeMapper.findStudentA(actid);
+                break;
+            case 0:
+                studentBS = specifiedTypeMapper.findStudentB(actid);
+                break;
 
-        PageInfo<StudentA> page = new PageInfo<>(studentAS);
+            default:
+                throw new ValidException("Type cannot be empty");
+        }
+//                studentAS.addAll(studentBS);
 
-        for(int i =0;i<page.getList().size();i++){
-            System.out.println(page.getList().get(i));
+                PageInfo<StudentA> page = new PageInfo<>(studentAS);
+                int sum = (int) page.getTotal();
+
+                if (sum % pagesize != 0) {
+                    total = sum / pagesize + 1;
+                } else {
+                    total = sum / pagesize;
+                }
+                return new ShowPrizerAResponse(200, "success", total, actid, page.getList());
         }
 
-        return new ShowPrizerResponse(200,"success",page.getSize(),actid ,page.getList());
+
     }
-}

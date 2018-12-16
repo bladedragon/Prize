@@ -4,6 +4,7 @@ import net.sf.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -19,9 +20,10 @@ public class Scheduler {
     private Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     RedisTokenHelper redisTokenHelper = new RedisTokenHelper();
-
-    public static final String WX_APPID = "wxaf05acd677a29f25";
-    public static final String WX_APPSECRET = "58e74928490b55bebb483fc526828bfc";
+    @Value("${WX_APPID}")
+   private String WX_APPID ;
+    @Value("${WX_APPSECRET}")
+private String WX_APPSECRET;
 
     /**
      * 定时获取access_token

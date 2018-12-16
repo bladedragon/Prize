@@ -1,6 +1,6 @@
 package team.redrock.prize.controller;
 
-import org.apache.ibatis.annotations.Param;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -19,9 +19,10 @@ public class UserController {
     UserService userService;
 
     @PostMapping(value = "/login")
-    public UserResponse userLogin(@RequestParam(defaultValue = "") String username, @RequestParam(defaultValue = "") String password, HttpServletRequest request, HttpServletResponse response) throws ValidException {
+    public UserResponse userLogin(@RequestParam("username") String username, @RequestParam("password") String password, HttpServletRequest request, HttpServletResponse response) throws ValidException {
 
 
+        System.out.println("到这里了");
         UserResponse userResponse = userService.Login(username,password,request,response);
         int status = userResponse.getStatus();
         switch(status){

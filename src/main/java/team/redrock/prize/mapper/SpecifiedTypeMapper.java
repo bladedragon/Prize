@@ -21,11 +21,11 @@ public interface SpecifiedTypeMapper {
             "telephone=#{telephone},reward=#{reward},actid=#{actid},add_time=#{add_time},status=#{status}")
     void insert(StudentA student);
 
-    @Select("select * from specified_type where activity = #{activity}")
-    List<StudentA> findStudentA(String activity);
+    @Select("select * from specified_type where actid = #{actid}")
+    List<StudentA> findStudentA(String actid);
 
-    @Select("select * from non_specified_type") // 查询所有
-    List<StudentB> findAllStudentB();
+    @Select("select * from non_specified_type where  actid = #{actid}") // 查询所有
+    List<StudentB> findStudentB(String actid);
 
 
 

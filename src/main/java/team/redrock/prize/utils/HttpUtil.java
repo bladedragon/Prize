@@ -1,4 +1,4 @@
-package utils;
+package team.redrock.prize.utils;
 
 
 import javax.net.ssl.HttpsURLConnection;

@@ -1,4 +1,4 @@
-package utils;
+package team.redrock.prize.utils;
 
 
 import team.redrock.prize.Verify.SHA1Utils;

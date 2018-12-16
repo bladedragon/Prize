@@ -4,7 +4,7 @@ server:
 spring:
   datasource:
     url: jdbc:mysql://127.0.0.1:3306/prize?characterEncoding=utf8&useSSL=false&serverTimezone=UTC
-    driver-class-name: com.mysql.jdbc.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password:
   jpa:
@@ -26,4 +26,11 @@ mybatis:
   type-aliases-package: team.redrock.prize.bean
 
 
-prjPath: AcceptPrize/
+prjPath: accept_prize/
+WX_APPID: "wxaf05acd677a29f25"
+WX_APPSECRET: "58e74928490b55bebb483fc526828bfc"
+REDIRECT_URI: " http://77cnny.natappfree.cc"
+
+OPENIDTemp: "o08-k1CAlytHhsEFrnfnaA-W4FDo"
+TEMPLATE_ID: "z6DiIC3-M3RJikwYUPALN5nlMMYr1VrMFbVFHSsTEWo"
+SENDURL: "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token="

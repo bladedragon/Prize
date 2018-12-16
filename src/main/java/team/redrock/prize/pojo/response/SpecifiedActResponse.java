@@ -13,8 +13,8 @@ import java.util.Map;
 @NoArgsConstructor
 public class SpecifiedActResponse {
 
-    int status;
-    String info;
+  private  int status;
+    private String info;
    private  String actid;
    private  List<Map<String ,String>> msg;
 

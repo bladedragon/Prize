@@ -1,12 +1,19 @@
 package team.redrock.prize.bean;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.Map;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class SpecifiedAct {
-    private List<ReqStudent> reqStudents;
     private String activity;
     private String acturl;
+    private List<PrizeList> typeA;
+    private List<String> typeB;
+
 }

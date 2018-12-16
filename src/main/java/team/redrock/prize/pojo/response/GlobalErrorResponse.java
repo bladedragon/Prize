@@ -5,9 +5,9 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class InfoResponse {
-     int status;
-     String info;
+public class GlobalErrorResponse {
 
+    private int status;
+    private String msg;
 
 }

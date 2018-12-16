@@ -4,14 +4,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ReqStudent {
-    private String stuname;
-    private String college;
-    private String stuid;
-    private String telephone;
-
-
+public class PrizeList {
+    private String reward;
+    private String sendmsg;
+    private List<ReqStudent> reqStudents;
 }

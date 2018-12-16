@@ -1,6 +1,7 @@
 package team.redrock.prize.Access_token;
 
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
@@ -11,6 +12,7 @@ import javax.annotation.Resource;
 import java.util.concurrent.TimeUnit;
 
 @Component
+@Slf4j
 public class RedisTokenHelper {
 
     @Autowired(required = true)
@@ -19,11 +21,6 @@ public class RedisTokenHelper {
     @Autowired
     RedisTemplate<Object, Object> redisTemplate;
 
-//    @Resource(name="stringRedisTemplate")
-//    ValueOperations<String, String> ops;
-//
-//    @Resource(name="redisTemplate")
-//    ValueOperations<Object, Object> objOps;
 
     /**
      * 键值对存储 字符串 ：有效时间3分钟
@@ -33,8 +30,8 @@ public class RedisTokenHelper {
      */
 
     public void save(String tokenType, String Token) {
-        this.stringRedisTemplate.opsForValue().set(tokenType, Token, 180, TimeUnit.SECONDS);
-        System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+        this.stringRedisTemplate.opsForValue().set(tokenType, Token, 5400, TimeUnit.SECONDS);
+
     }
 
     /**
@@ -82,7 +79,7 @@ public class RedisTokenHelper {
             }
         }catch(NullPointerException e){
            // e.printStackTrace();
-            System.out.println("空指针异常");
+           log.error("ZLOG==>NullPoint Exception");
             return "1";
         }
 
