@@ -12,6 +12,7 @@ import team.redrock.prize.mapper.GetPrizerMapper;
 import team.redrock.prize.mapper.SpecifiedTypeMapper;
 import team.redrock.prize.pojo.response.GetPrizeResponse;
 import team.redrock.prize.utils.PosterUtil;
+import team.redrock.prize.utils.SessionUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -74,8 +75,14 @@ public class GetprizeAService {
                 log.error("ZLOG==>Fail to use Api");
                 throw new ValidException("Fail to get stuNum");
             }
-            getPrizerMapper.insertNonSpecified_type(new StudentB(sirbean.getRealname(),sirbean.getStuId(),openid,actid,date,reward));
+            getPrizerMapper.insertNonSpecified_type(new StudentB(sirbean.getRealname(),sirbean.getStuId(),openid,actid,date,reward,getID(reward)));
             return new GetPrizeResponse(200,"success");
         }
+    }
+
+    private  static String  getID(String activity){
+        String longID = SessionUtil.getMD5(activity);
+        String actID = longID.substring(0,6);
+        return actID;
     }
 }

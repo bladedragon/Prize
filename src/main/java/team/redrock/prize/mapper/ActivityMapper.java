@@ -15,11 +15,11 @@ import java.util.List;
 public interface ActivityMapper {
 
     @Options(keyProperty="actid", keyColumn="id")
-    @Insert("Insert into activity (actname,founder,url,status,time,actid,reward) value(#{actname},#{founder},#{url},#{status},#{time},#{actid},#{reward})ON DUPLICATE KEY UPDATE actname=#{actname},founder=#{founder},status=#{status},actid=#{actid},time=#{time}")
+    @Insert("Insert into activity (actname,founder,url,status,time,actid,reward,rewardID) value(#{actname},#{founder},#{url},#{status},#{time},#{actid},#{reward},#{rewardID})ON DUPLICATE KEY UPDATE actname=#{actname},founder=#{founder},status=#{status},actid=#{actid},time=#{time},rewardID=#{rewardID}")
     int insert(Activity activity);
 
-    @Delete("Delete from activity where actname = #{actname}")
-    void delete(String actname);
+    @Delete("Delete from activity where actid = #{actid}")
+    void deleteAct(String actid);
 
     @Select("Select actid from activity where actname = #{actname}")
     List<String> SelectActivityId(@Param("actname") String actname);
@@ -29,5 +29,12 @@ public interface ActivityMapper {
 
     @Select("Select actname,founder,url,status,time,actid from activity group by actname")
     List<ShowAct> SelectActAll();
+
+    @Delete("Delete from specified_type where actid = #{actid}")
+    void deleteSpecifiedType(String actid);
+
+    @Delete("Delete from non_specified_type where actid = #{actid}")
+    void deleteNoSpecifiedType(String actid);
+
 
 }

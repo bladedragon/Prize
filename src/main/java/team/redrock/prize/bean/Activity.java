@@ -17,8 +17,9 @@ public class Activity {
     private String time;
     private String actid;
     private String reward;
+    private String rewardID;
 
-    public Activity(String actname,String founder,String url,int status,String time,String actid,String reward){
+    public Activity(String actname,String founder,String url,int status,String time,String actid,String reward,String rewardID){
         this.actname = actname;
         this.founder  =founder;
         this.url = url;
@@ -26,5 +27,7 @@ public class Activity {
         this.time = time;
         this.actid = actid;
         this.reward = reward;
+        this.rewardID = rewardID;
+
     }
 }

@@ -43,37 +43,40 @@ public class SpecifiedActService {
           List<String>  actids = activityMapper.SelectActivityId(activity);
 
           if(actids.isEmpty()){
-            actid = getactID(activity);
+            actid = getID(activity);
           }else{
                actid = actids.get(0);
           }
 
           if(actid.equals("0")){
-              actid = getactID(activity);
+              actid = getID(activity);
           }
 
 
-                log.info("________________________________________sessionname = " + session.getAttribute("SESSIONNAME"));
+          log.info("________________________________________sessionname = " + session.getAttribute("SESSIONNAME"));
 
-
+          Map<String,String> rewards = new HashMap<>();
         List<Map<String, String>> failedMsg = new ArrayList<>();
+        String rewardID;
         for (int i = 0; i < typeA.size(); i++) {
 
 //            TestThread testThread = ApplicationContextProvider.getBean("test",TestThread.class);
 //            System.out.println(testThread);
 
             PrizeList prizeList = typeA.get(i);
-            activityMapper.insert(new Activity(activity, (String) session.getAttribute("SESSIONNAME"), url, 1, date, actid, prizeList.getReward()));
+            rewardID = getID(prizeList.getReward());
+            activityMapper.insert(new Activity(activity, (String) session.getAttribute("SESSIONNAME"), url, 1, date, actid, prizeList.getReward(),rewardID));
 
             for (int j = 0; j < prizeList.getReqStudents().size(); j++) {
                 ReqStudent reqStudent = prizeList.getReqStudents().get(j);
                 String msg = prizeList.getSendmsg();
-                String openid = PosterUtil.getOpenID(reqStudent.getStuid());
+//                String openid = PosterUtil.getOpenID(reqStudent.getStuid());
+                String openid = "";
                 if (openid.equals("0")) {
                     return new SpecifiedActResponse(-2, "Fail to get openid", actid, null);
                 }
                 System.out.println("---------" + openid + "---------------");
-                StudentA student = new StudentA(openid, reqStudent.getStuname(), reqStudent.getCollege(), reqStudent.getStuid(), Integer.parseInt(reqStudent.getTelephone()), actid, date, prizeList.getReward(), 0);
+                StudentA student = new StudentA(openid, reqStudent.getStuname(), reqStudent.getCollege(), reqStudent.getStuid(), Integer.parseInt(reqStudent.getTelephone()), actid, date, prizeList.getReward(), 0,rewardID);
                 specifiedTypeMapper.insert(student);
               int result = 2;
 
@@ -95,7 +98,8 @@ public class SpecifiedActService {
         }
 
             for(int m =0;m<typeB.size();m++ ){
-                activityMapper.insert(new Activity(activity, (String) session.getAttribute("SESSIONNAME"), url,  1, date, actid,typeB.get(m)));
+                rewardID = getID(typeB.get(m));
+                activityMapper.insert(new Activity(activity, (String) session.getAttribute("SESSIONNAME"), url,  1, date, actid,typeB.get(m),rewardID));
             }
 
 
@@ -126,7 +130,7 @@ public class SpecifiedActService {
     }
 
 
-    private  static String  getactID(String activity){
+    private  static String  getID(String activity){
         String longID = SessionUtil.getMD5(activity);
         String actID = longID.substring(0,6);
         return actID;

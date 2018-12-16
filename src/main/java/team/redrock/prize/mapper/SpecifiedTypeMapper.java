@@ -16,9 +16,9 @@ import java.util.List;
 @Transactional
 public interface SpecifiedTypeMapper {
 
-    @Insert("Insert into specified_type (stuname,college,stuid,telephone,reward,actid,openid,add_time,status) value(#{stuname},#{college},#{stuid},#{telephone},"+
-            "#{reward},#{actid},#{openid},#{add_time},#{status})ON DUPLICATE KEY UPDATE college=#{college}," +
-            "telephone=#{telephone},reward=#{reward},actid=#{actid},add_time=#{add_time},status=#{status}")
+    @Insert("Insert into specified_type (stuname,college,stuid,telephone,reward,actid,openid,add_time,status,rewardID) value(#{stuname},#{college},#{stuid},#{telephone},"+
+            "#{reward},#{actid},#{openid},#{add_time},#{status},#{rewardID})ON DUPLICATE KEY UPDATE college=#{college}," +
+            "telephone=#{telephone},reward=#{reward},actid=#{actid},add_time=#{add_time},status=#{status},rewardID=#{rewardID}")
     void insert(StudentA student);
 
     @Select("select * from specified_type where actid = #{actid}")

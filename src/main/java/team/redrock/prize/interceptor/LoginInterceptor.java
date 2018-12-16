@@ -77,7 +77,7 @@ long time = System.currentTimeMillis();
 //            }
 
         System.out.println(session.getAttribute("SESSIONID"));
-        throw new ValidException("session不存在");
+        throw new ValidException("token验证无效");
 
     }
 

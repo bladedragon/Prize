@@ -16,18 +16,19 @@ public class StudentA {
     private String add_time;
     private String reward;
     private int status;
+    private String rewardID;
 
-        public StudentA(String openid,String stuname, String stuid,String actid, String add_time,String reward) {
+        public StudentA(String openid,String stuname, String stuid,String actid, String add_time,String reward,String rewardID) {
         this.stuname = stuname;
         this.college = college;
         this.stuid = stuid;
         this.telephone = telephone;
         this.reward = reward;
-
         this.openid = openid;
         this.actid = actid;
         this.add_time = add_time;
         this.status = status;
+        this.rewardID = rewardID;
 
     }
 }

@@ -21,7 +21,7 @@ public class GetPrizeController {
     /**
      * @param code  用户同意授权后,获取到的code
      * @param state 重定向状态参数
-     * https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxaf05acd677a29f25&redirect_uri=http://fbdpqp.natappfree.cc/getPrizeB/93e3ad/xbox&response_type=code&scope=snsapi_userinfo&state=STAT#wechat_redirect
+     * https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxaf05acd677a29f25&redirect_uri=http://67r96u.natappfree.cc/getPrizeB/93e3ad/xbox&response_type=code&scope=snsapi_userinfo&state=STAT#wechat_redirect
      * @return
      */
 

@@ -14,6 +14,7 @@ public class StudentB {
     private String actid;
     private String add_time;
     private String reward;
+    private String rewardID;
 
 
 
