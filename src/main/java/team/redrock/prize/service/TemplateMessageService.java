@@ -30,7 +30,9 @@ public class TemplateMessageService {
     private String sendurl;
 
     @Autowired
-    Scheduler scheduler;
+   private  Scheduler scheduler;
+    @Autowired
+    private HttpUtil httpUtil;
     long time =System.currentTimeMillis();
 
 
@@ -55,10 +57,13 @@ public class TemplateMessageService {
 //    @Async("getAsyncExecutor")
     public String  sendMsg(String msg,String openid,String stuname,String actname,String award,String status) throws SQLException {
         time = System.currentTimeMillis();
-            System.out.println("---------start send ----------------"+(System.currentTimeMillis()-time)+"-------------------------------------");
+        String accesstoken = "";
+        System.out.println("---------start send ----------------"+(System.currentTimeMillis()-time)+"-------------------------------------");
 
         System.out.println("here");
-            String accesstoken= scheduler.getAccess_Token();
+
+             accesstoken= scheduler.getAccess_Token();
+
         System.out.println(accesstoken);
         System.out.println("------------get token-------------"+(System.currentTimeMillis()-time)+"-------------------------------------");
         String url = sendurl+accesstoken;
@@ -69,7 +74,7 @@ public class TemplateMessageService {
         System.out.println("------------getTemplate-------------"+(System.currentTimeMillis()-time)+"-------------------------------------");
         try {
 
-             HttpResponse = HttpUtil.httpRequestToString(url,"POST", JSON.toJSONString(templateMsg));
+             HttpResponse = httpUtil.httpRequestToString(url,"POST", JSON.toJSONString(templateMsg));
             System.out.println("-------------http------------"+(System.currentTimeMillis()-time)+"-------------------------------------");
         } catch (NoSuchProviderException e) {
             e.printStackTrace();

@@ -22,33 +22,33 @@ public class UserService {
     @Autowired
     StringRedisTemplate stringRedisTemplate ;
 
-        public UserResponse Login(String username, String password, HttpServletRequest request, HttpServletResponse response){
+        public UserResponse Login(String username, String password, HttpServletRequest request){
         HttpSession session = request.getSession(true);
         System.out.println("---------------------------------------------"+System.currentTimeMillis()+"-------------------------------------------------");
 
 
 
         if(IsNull(username)){
-          return new UserResponse(-1,"用户名不能为空");
+          return new UserResponse(-1,"用户名不能为空",null);
 
         }else if(IsNull(password)) {
 
-            return new UserResponse(-2,"密码不能为空！");
+            return new UserResponse(-2,"密码不能为空！",null);
         }else {
 
             UserInfo user =  userMapper.SelectByUsername(username);
             if(user ==null){
-                return new UserResponse(-3,"用户名不存在");
+                return new UserResponse(-3,"用户名不存在",null);
             }
             if(!password.equals(user.getPassword())){
-                return new UserResponse(-4,"密码错误！");
+                return new UserResponse(-4,"密码错误！",null);
 
             }else{
                 System.out.println("---------------------------------------------"+System.currentTimeMillis()+"-------------------------------------------------");
                 long time =System.currentTimeMillis();
                 if(session.getAttribute("SESSIONID")!=null&&stringRedisTemplate.opsForHash().hasKey("SESSIONID",username))
                 {
-                       return new UserResponse(1,"你已登录");
+                       return new UserResponse(1,"你已登录", (String) session.getAttribute("SESSIONID"));
 
                 }
                     SessionUtil sessionUtil = new SessionUtil();
@@ -68,10 +68,10 @@ public class UserService {
                     stringRedisTemplate.opsForHash().put("SESSIONID",username,usersession);
                     stringRedisTemplate.expire("SESSIONID",30,TimeUnit.MINUTES);
                 System.out.println("-----------------------"+(System.currentTimeMillis()-time)+"-------------------------");
-//                    response.addHeader("SESSIONID",usersession);
+//
                 System.out.println("---------------------------------------------"+System.currentTimeMillis()+"-------------------------------------------------");
 
-                return new UserResponse(0,"登录成功");
+                return new UserResponse(0,"登录成功",usersession);
 
                 }
 

@@ -23,7 +23,7 @@ public class UserController {
 
 
         System.out.println("到这里了");
-        UserResponse userResponse = userService.Login(username,password,request,response);
+        UserResponse userResponse = userService.Login(username,password,request);
         int status = userResponse.getStatus();
         switch(status){
             case -1:

@@ -4,7 +4,10 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import team.redrock.prize.bean.WXAccount;
 import team.redrock.prize.utils.HttpUtil;
@@ -26,6 +29,8 @@ public class WXAuthorizeService {
     @Value("${REDIRECT_URI}")
     private String REDIRECT_URI;
 
+    @Autowired
+    private  HttpUtil httpUtil;
     public WXAccount getWxInfo(String code,String state) throws NoSuchProviderException, NoSuchAlgorithmException {
         String userid=null;
         String nickname=null;
@@ -52,7 +57,7 @@ public class WXAuthorizeService {
             log.info("get Access Token URL:{}", tokenUrl);
 
             // 通过https方式请求获得web_access_token
-            String response = HttpUtil.httpRequestToString(tokenUrl, "GET", null);
+            String response = httpUtil.httpRequestToString(tokenUrl, "GET", null);
 
             JSONObject jsonObject = JSON.parseObject(response);
             log.info("请求到的Access Token:{}", jsonObject.toJSONString());
@@ -70,7 +75,7 @@ public class WXAuthorizeService {
                     log.info("获取用户信息的URL:{}", userMessageUrl);
 
                     // 通过https方式请求获得用户信息响应
-                    String userMessageResponse = HttpUtil.httpRequestToString(userMessageUrl, "GET", null);
+                    String userMessageResponse = httpUtil.httpRequestToString(userMessageUrl, "GET", null);
 
                     JSONObject userMessageJsonObject = JSON.parseObject(userMessageResponse);
 

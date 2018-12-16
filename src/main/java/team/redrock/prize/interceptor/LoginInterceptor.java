@@ -10,6 +10,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import team.redrock.prize.exception.ValidException;
+import team.redrock.prize.pojo.RequestWrapper;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -38,6 +39,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
         System.out.println("资源请求路径：" + path);
         if(path.matches(errorPath)){
 
+
             throw new ValidException("Internal Server Error");
         }
         if (path.matches(noMatchPath)) {
@@ -46,9 +48,16 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
             // 授权路径，不拦截
             return true;
         } else if (session.getAttribute("SESSIONID") != null) {
-//            System.out.println(stringRedisTemplate.opsForHash().get("SESSIONID","ZZZ"));
-                System.out.println("redis为空");
+long time = System.currentTimeMillis();
 
+            String token = request.getParameter("token");
+            if(token==null||token.equals("")){
+                RequestWrapper requestWrapper = new RequestWrapper(request);
+                String body = requestWrapper.getBody();
+            }
+
+
+//            System.out.println("++++++++++++++++++++++"+body);
 
             Map<Object, Object> sessionMap =  stringRedisTemplate.opsForHash().entries("SESSIONID");
             for (Object sessionId:sessionMap.values() ) {
@@ -69,7 +78,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 
         System.out.println(session.getAttribute("SESSIONID"));
         throw new ValidException("session不存在");
-//        return true;
+
     }
 
 }

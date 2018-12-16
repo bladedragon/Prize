@@ -11,4 +11,5 @@ public class UserResponse {
 
     private int status;
     private Object data;
+    private String token;
 }

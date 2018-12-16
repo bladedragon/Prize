@@ -26,6 +26,11 @@ public class NSpecifiedActController {
     @ResponseBody
     public NSpecifiedActResponse NSpecifiedActOperation(@RequestBody NSpecifiedAct nSpecifiedAct, HttpServletRequest request) throws ValidException {
 
+        String token = nSpecifiedAct.getToken();
+        if(null==token||!request.getSession().getAttribute("SESSIONID").equals(token)){
+            throw new ValidException("token验证无效");
+        }
+
         String activity = nSpecifiedAct.getActivity();
         String url = nSpecifiedAct.getActurl();
         if(activity==null||activity.isEmpty()){

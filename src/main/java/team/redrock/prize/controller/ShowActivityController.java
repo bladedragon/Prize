@@ -10,6 +10,8 @@ import team.redrock.prize.pojo.response.ShowActivityResponse;
 import team.redrock.prize.service.ShowActivityService;
 import team.redrock.prize.service.ShowPrizerService;
 
+import javax.servlet.http.HttpServletRequest;
+
 @RestController
 public class ShowActivityController {
 
@@ -17,7 +19,11 @@ public class ShowActivityController {
     ShowActivityService showActivityService;
 
     @PostMapping("/showActivity")
-    public ShowActivityResponse showActivity(@RequestParam(value = "page",defaultValue = "0") int page, @RequestParam(value = "pagesize",defaultValue = "5") int pagesize) throws ValidException {
+    public ShowActivityResponse showActivity(@RequestParam(value = "token",required = false)String token, @RequestParam(value = "page",defaultValue = "0") int page, @RequestParam(value = "pagesize",defaultValue = "5") int pagesize, HttpServletRequest request) throws ValidException {
+
+        if(null==token||!request.getSession().getAttribute("SESSIONID").equals(token)){
+            throw new ValidException("token验证无效");
+        }
 
 
         if(pagesize==0){

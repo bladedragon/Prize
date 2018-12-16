@@ -75,7 +75,11 @@ public class SpecifiedActService {
                 System.out.println("---------" + openid + "---------------");
                 StudentA student = new StudentA(openid, reqStudent.getStuname(), reqStudent.getCollege(), reqStudent.getStuid(), Integer.parseInt(reqStudent.getTelephone()), actid, date, prizeList.getReward(), 0);
                 specifiedTypeMapper.insert(student);
-                int result = getFailedSend(templateMessageService.sendMsg(msg, openid, reqStudent.getStuname(), activity, prizeList.getReward(), "未领取"));
+              int result = 2;
+
+                     result = getFailedSend(templateMessageService.sendMsg(msg, openid, reqStudent.getStuname(), activity, prizeList.getReward(), "未领取"));
+                    System.out.println("result:"+result);
+
 
 
                 if (result == 1) {

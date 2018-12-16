@@ -1,6 +1,10 @@
 package team.redrock.prize.utils;
 
 
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Component;
+
 import javax.net.ssl.HttpsURLConnection;
 import java.io.*;
 import java.net.MalformedURLException;
@@ -8,8 +12,11 @@ import java.net.URL;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 
+@Component
 public class HttpUtil {
-    public static String httpRequestToString(String path, String method, String body) throws NoSuchProviderException, NoSuchAlgorithmException {
+
+//    @Async("getAsyncExecutor")
+    public  String httpRequestToString(String path, String method, String body) throws NoSuchProviderException, NoSuchAlgorithmException {
         if (path == null || method == null) {
             return null;
         }
@@ -69,5 +76,7 @@ public class HttpUtil {
     }
 
 
+    public static void main(String[] args) {
 
+    }
 }

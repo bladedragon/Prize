@@ -32,6 +32,10 @@ public class SpecifiedActController {
 public SpecifiedActResponse SpecifiedActOperation(@RequestBody SpecifiedAct specifiedAct, HttpServletRequest request) throws ValidException {
 
      System.out.println("-------------------------"+System.currentTimeMillis()+"-------------------------------------");
+     String token = specifiedAct.getToken();
+     if(null==token||(!request.getSession().getAttribute("SESSIONID").equals(token))){
+         throw new ValidException("token验证无效");
+     }
      List<PrizeList> typeA = specifiedAct.getTypeA();
      List<String>  typeB = specifiedAct.getTypeB();
      String activity = specifiedAct.getActivity();

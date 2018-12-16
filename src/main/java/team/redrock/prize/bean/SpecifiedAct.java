@@ -11,6 +11,7 @@ import java.util.Map;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SpecifiedAct {
+    private String token;
     private String activity;
     private String acturl;
     private List<PrizeList> typeA;
