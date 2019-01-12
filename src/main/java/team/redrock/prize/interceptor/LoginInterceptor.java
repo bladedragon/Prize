@@ -2,12 +2,9 @@ package team.redrock.prize.interceptor;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.data.annotation.AccessType;
+
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.stereotype.Component;
+
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import team.redrock.prize.exception.ValidException;
 import team.redrock.prize.pojo.RequestWrapper;
@@ -57,7 +54,7 @@ long time = System.currentTimeMillis();
             }
 
 
-//            System.out.println("++++++++++++++++++++++"+body);
+
 
             Map<Object, Object> sessionMap =  stringRedisTemplate.opsForHash().entries("SESSIONID");
             for (Object sessionId:sessionMap.values() ) {

@@ -1,8 +1,6 @@
 package team.redrock.prize.utils;
 
 
-import org.springframework.cache.annotation.CacheConfig;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import javax.net.ssl.HttpsURLConnection;

@@ -23,4 +23,4 @@ spring:
         max-active: 8
         max-wait: 10000ms
 mybatis:
-  type-aliases-package: team.redrock.prize.bean
+  type-aliases-package:

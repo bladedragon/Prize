@@ -6,15 +6,13 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-
-@Data
 @AllArgsConstructor
+@Data
 @NoArgsConstructor
-public class PrizeList {
-    private String reward;
-    private String prizeDate;
-    private String sendmsg;
-    private String remark;
-    private List<ReqStudent> reqStudents;
+public class TempAct {
 
+    private String activity;
+
+    private List<PrizeList> typeA;
+    private List<String> typeB;
 }

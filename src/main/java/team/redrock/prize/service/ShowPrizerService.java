@@ -34,7 +34,7 @@ public class ShowPrizerService {
 
 
 
-                PageInfo<StudentA> page = new PageInfo<>(studentAS);
+                PageInfo<StudentA> page = new PageInfo(studentAS);
                 int sum = (int) page.getTotal();
 
                 if (sum % pagesize != 0) {
@@ -55,7 +55,7 @@ public class ShowPrizerService {
         studentBS = specifiedTypeMapper.findStudentB(actid);
 
 
-        PageInfo<StudentB> page = new PageInfo<>(studentBS);
+        PageInfo<StudentB> page = new PageInfo(studentBS);
         int sum = (int) page.getTotal();
 
         if (sum % pagesize != 0) {

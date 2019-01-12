@@ -5,10 +5,9 @@ spring:
   datasource:
     url: jdbc:mysql://127.0.0.1:3306/prize?characterEncoding=utf8&useSSL=false&serverTimezone=UTC
     driver-class-name: com.mysql.cj.jdbc.Driver
-    username: root
-    password:
-  jpa:
-    show-sql: true
+    username: llp
+    password: Redr0ck;D0nt;Fuck;Me;
+
   redis:
     host: localhost
     port: 6379
@@ -29,8 +28,9 @@ mybatis:
 prjPath: accept_prize/
 WX_APPID: "wxaf05acd677a29f25"
 WX_APPSECRET: "58e74928490b55bebb483fc526828bfc"
-REDIRECT_URI: " http://77cnny.natappfree.cc"
+REDIRECT_URI: " http://zblade.top"
 
 OPENIDTemp: "o08-k1CAlytHhsEFrnfnaA-W4FDo"
-TEMPLATE_ID: "z6DiIC3-M3RJikwYUPALN5nlMMYr1VrMFbVFHSsTEWo"
+TEMPLATE_ID: "1RvFGl6KG5owcjPNuNZ9iJsVonuMWqHZpGmlsgFi2eY"
 SENDURL: "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token="
+AccessTokenApi: "https://wx.idsbllp.cn/game/api/accesstoken.php"

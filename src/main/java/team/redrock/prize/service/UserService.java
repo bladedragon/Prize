@@ -9,6 +9,7 @@ import team.redrock.prize.bean.UserInfo;
 import team.redrock.prize.pojo.response.UserResponse;
 import team.redrock.prize.utils.SessionUtil;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -22,7 +23,7 @@ public class UserService {
     @Autowired
     StringRedisTemplate stringRedisTemplate ;
 
-        public UserResponse Login(String username, String password, HttpServletRequest request){
+        public UserResponse Login(String username, String password, HttpServletRequest request,HttpServletResponse response){
         HttpSession session = request.getSession(true);
         System.out.println("---------------------------------------------"+System.currentTimeMillis()+"-------------------------------------------------");
 
@@ -56,13 +57,15 @@ public class UserService {
                     String usersession = sessionUtil.createSessionId(username);
                     System.out.println("创建session: "+usersession);
                     //响应添加cookie
-//                    Cookie cookie = new Cookie("SESSIONID",usersession);
-//                    cookie.setPath(request.getContextPath());
-//                    response.addCookie(cookie);
+                    Cookie cookie = new Cookie("isLogined",usersession);
+                    cookie.setPath(request.getContextPath());
+                    cookie.setMaxAge(100000);
+                    response.addCookie(cookie);
 //                    //设置session
                 System.out.println("-----------------------"+(System.currentTimeMillis()-time)+"-------------------------");
                     session.setAttribute("SESSIONID",usersession);
                     session.setAttribute("SESSIONNAME",username);
+
 //                    session.setMaxInactiveInterval(30*60);
                 System.out.println("-----------------------"+(System.currentTimeMillis()-time)+"-------------------------");
                     stringRedisTemplate.opsForHash().put("SESSIONID",username,usersession);

@@ -4,13 +4,15 @@ package team.redrock.prize.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
 import team.redrock.prize.interceptor.LoginInterceptor;
 
 
 
 @Configuration
-public class LoginConfiguration extends WebMvcConfigurerAdapter {
+public class LoginConfiguration implements WebMvcConfigurer {
 
     @Bean
     public  LoginInterceptor loginInterceptor(){

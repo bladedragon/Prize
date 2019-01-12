@@ -5,9 +5,9 @@ import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import team.redrock.prize.bean.Activity;
+
 import team.redrock.prize.bean.ShowAct;
-import team.redrock.prize.bean.StudentA;
+
 import team.redrock.prize.mapper.ActivityMapper;
 import team.redrock.prize.pojo.response.ShowActivityResponse;
 

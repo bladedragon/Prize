@@ -17,11 +17,15 @@ public class DeleteActController {
     ActivityMapper activityMapper;
 
     @PostMapping("/deleteActivity")
-    public GetPrizeResponse deleteActivity(@RequestParam(value = "token",required = false)String token, @RequestParam("actid") String actid, HttpServletRequest request) throws ValidException {
+    public GetPrizeResponse deleteActivity(@RequestParam(value = "token",required = false)String token, @RequestParam(value = "actid",defaultValue = "") String actid, HttpServletRequest request) throws ValidException {
 
+        if(actid.equals("")){
+            throw new ValidException("Param cannnot be null");
+        }
         if(null==token||!request.getSession().getAttribute("SESSIONID").equals(token)){
             throw new ValidException("token验证无效");
         }
+
         activityMapper.deleteAct(actid);
         activityMapper.deleteSpecifiedType(actid);
         activityMapper.deleteNoSpecifiedType(actid);

@@ -19,11 +19,11 @@ public class UserController {
     UserService userService;
 
     @PostMapping(value = "/login")
-    public UserResponse userLogin(@RequestParam("username") String username, @RequestParam("password") String password, HttpServletRequest request, HttpServletResponse response) throws ValidException {
+    public UserResponse userLogin(@RequestParam(value = "username",defaultValue = "") String username, @RequestParam(value = "password",defaultValue = "") String password, HttpServletRequest request, HttpServletResponse response) throws ValidException {
 
 
         System.out.println("到这里了");
-        UserResponse userResponse = userService.Login(username,password,request);
+        UserResponse userResponse = userService.Login(username,password,request,response);
         int status = userResponse.getStatus();
         switch(status){
             case -1:

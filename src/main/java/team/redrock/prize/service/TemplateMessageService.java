@@ -36,26 +36,27 @@ public class TemplateMessageService {
     long time =System.currentTimeMillis();
 
 
-    private  TemplateMsg getTemplate(String msg,String openid,String name,String activity,String award,String status) throws SQLException {
+    private  TemplateMsg getTemplate(String openid,String msg,String activity,String award,String addtime,String prizetime,String remark) throws SQLException {
 
         TemplateMsg templateMsg = new TemplateMsg();
-
+        System.out.println(template_id);
         Map<String,TemplateData>  dataMap = new HashMap<>();
-            dataMap.put("first",new TemplateData(msg,"#173177"));
-            dataMap.put("name",new TemplateData(name,"#173177"));
-            dataMap.put("activity",new TemplateData(activity,"#173177"));
-            dataMap.put("award",new TemplateData(award,"#173177"));
-            dataMap.put("status",new TemplateData(status,"#173177"));
+        dataMap.put("first",new TemplateData(msg,"#173177"));
+            dataMap.put("keyword1",new TemplateData(activity,"#173177"));
+            dataMap.put("keyword2",new TemplateData(award,"#173177"));
+            dataMap.put("keyword3",new TemplateData(addtime,"#173177"));
+            dataMap.put("keyword4",new TemplateData(prizetime,"#173177"));
+            dataMap.put("remark",new TemplateData(remark,"#173177"));
             templateMsg.setData(dataMap);
             templateMsg.setTemplate_id(template_id);
             templateMsg.setTopcolor("#173177");
-        templateMsg.setTouser(fromUserName);
+        templateMsg.setTouser(openid);
 
 
         return templateMsg;
     }
 //    @Async("getAsyncExecutor")
-    public String  sendMsg(String msg,String openid,String stuname,String actname,String award,String status) throws SQLException {
+    public String  sendMsg(String openid,String msg,String activity,String award,String addtime,String prizetime,String remark) throws SQLException {
         time = System.currentTimeMillis();
         String accesstoken = "";
         System.out.println("---------start send ----------------"+(System.currentTimeMillis()-time)+"-------------------------------------");
@@ -69,7 +70,7 @@ public class TemplateMessageService {
         String url = sendurl+accesstoken;
         String HttpResponse  = "0";
 
-        TemplateMsg templateMsg = getTemplate(msg,openid,stuname,actname,award,status);
+        TemplateMsg templateMsg = getTemplate(openid,msg,activity, award, addtime, prizetime, remark);
 
         System.out.println("------------getTemplate-------------"+(System.currentTimeMillis()-time)+"-------------------------------------");
         try {

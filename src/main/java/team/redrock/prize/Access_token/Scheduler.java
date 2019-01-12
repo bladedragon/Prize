@@ -1,20 +1,26 @@
 package team.redrock.prize.Access_token;
 
+import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONObject;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import team.redrock.prize.exception.ValidException;
 
 import javax.annotation.Resource;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.SQLException;
 
 @Component
+@Slf4j
 public class Scheduler {
 
     private Logger logger = LoggerFactory.getLogger(getClass());
@@ -25,13 +31,16 @@ public class Scheduler {
     @Value("${WX_APPSECRET}")
 private String WX_APPSECRET;
 
+    @Value("${AccessTokenApi}")
+    private String AccessTokenApi;
+
     /**
      * 定时获取access_token
      *
      * @throws SQLException
      */
-    @Scheduled(fixedDelay = 7180000)
-    public String getAccessToken() throws SQLException {
+//    @Scheduled(fixedDelay = 7180000)
+    public String getAccessToken()  {
       // logger.info("==============开始获取access_token===============");
         String access_token = null;
         String grant_type = "client_credential";
@@ -70,16 +79,73 @@ private String WX_APPSECRET;
         return access_token;
     }
 
-    public String getAccess_Token() throws SQLException {
+    public String getAccess_Token() {
         String access_token =  redisTokenHelper.getObject("global_token");
         if (access_token.equals("1")) {
             System.out.println("获取access_token");
-            getAccessToken();
+//            getAccessToken();
+            getAccessTokenApi();
             access_token = (String) redisTokenHelper.getObject("global_token");
             System.out.println("accesstoken"+access_token);
         }
         return (String) access_token;
     }
+
+
+    @Scheduled(fixedDelay = 7180000)
+    public  String getAccessTokenApi() {
+        System.out.println("------------------------getaccessTokenApi()-------------------------");
+        String access_token = null;
+
+        URL urlGet = null;
+        try {
+            urlGet = new URL(AccessTokenApi);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        HttpURLConnection http = null;
+        try {
+            http = (HttpURLConnection) urlGet.openConnection();
+            http.setRequestMethod("GET"); // 必须是get方式请求
+            http.setRequestProperty("Authorization", "Redrock");
+            http.setDoOutput(true);
+            http.setDoInput(true);
+            http.connect();
+            InputStream is = http.getInputStream();
+            int size = is.available();
+            byte[] jsonBytes = new byte[size];
+            is.read(jsonBytes);
+            String message = new String(jsonBytes, "UTF-8");
+            JSONObject demoJson = JSONObject.fromObject(message);
+
+            System.out.println("message:"+message);
+            if(demoJson.getString("status").equals("200")){
+                access_token = demoJson.getString("data");
+                log.info("data = "+access_token);
+                redisTokenHelper.save("global_token", access_token);
+            }else{
+                log.error("获取AccessToken失败");
+                access_token = "";
+            }
+
+            is.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        log.info("getAccesstoken"+access_token);
+
+
+        return access_token;
+    }
+
+//
+//    public static void main(String[] args) {
+//        String token = getAccessTokenApi();
+//        System.out.println("getaccesstoken="+token);
+//    }
+
 
 
 }

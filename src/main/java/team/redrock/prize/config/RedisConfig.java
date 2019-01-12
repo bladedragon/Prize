@@ -1,17 +1,16 @@
 package team.redrock.prize.config;
 
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.PropertyAccessor;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.StringRedisTemplate;
+
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
-import org.springframework.data.redis.serializer.StringRedisSerializer;
+
+
+import team.redrock.prize.bean.TempAct;
+
 
 import java.net.UnknownHostException;
 
@@ -20,12 +19,12 @@ public class RedisConfig {
 
 
     @Bean
-    public RedisTemplate<Object, Object> objectRedisTemplate(
+    public RedisTemplate<Object, TempAct> tempActRedisTemplate(
             RedisConnectionFactory redisConnectionFactory) {
-        RedisTemplate<Object, Object> template = new RedisTemplate<Object, Object>();
+        RedisTemplate<Object, TempAct> template = new RedisTemplate<Object, TempAct>();
         template.setConnectionFactory(redisConnectionFactory);
         //使用json的序列化器
-        Jackson2JsonRedisSerializer ser = new Jackson2JsonRedisSerializer<Object>(Object.class);
+        Jackson2JsonRedisSerializer ser = new Jackson2JsonRedisSerializer<TempAct>(TempAct.class);
 //        JdkSerializationRedisSerializer ser = new JdkSerializationRedisSerializer();
         template.setDefaultSerializer(ser);                 //相当于key的序列化类型和value的序列化类型
         return template;

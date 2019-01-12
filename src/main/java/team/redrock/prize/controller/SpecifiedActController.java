@@ -2,7 +2,6 @@ package team.redrock.prize.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -10,7 +9,6 @@ import team.redrock.prize.bean.PrizeList;
 import team.redrock.prize.bean.SpecifiedAct;
 import team.redrock.prize.exception.ValidException;
 import team.redrock.prize.pojo.response.SpecifiedActResponse;
-import team.redrock.prize.service.AsyncService;
 import team.redrock.prize.service.SpecifiedActService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -26,10 +24,13 @@ public class SpecifiedActController {
     @Autowired
     SpecifiedActService specifiedActService;
 //    @Autowired
-//    AsyncService asyncService;
+//    AsyncTaskService asyncService;
 
  @PostMapping(value = "/specifiedAct")
 public SpecifiedActResponse SpecifiedActOperation(@RequestBody SpecifiedAct specifiedAct, HttpServletRequest request) throws ValidException {
+if(specifiedAct==null){
+    throw new ValidException("Param cannnot be null");
+}
 
      System.out.println("-------------------------"+System.currentTimeMillis()+"-------------------------------------");
      String token = specifiedAct.getToken();

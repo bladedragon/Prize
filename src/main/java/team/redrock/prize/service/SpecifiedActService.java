@@ -2,12 +2,13 @@ package team.redrock.prize.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
+
 import org.springframework.stereotype.Service;
 import team.redrock.prize.bean.Activity;
 import team.redrock.prize.bean.PrizeList;
 import team.redrock.prize.bean.ReqStudent;
 import team.redrock.prize.bean.StudentA;
+import team.redrock.prize.exception.ValidException;
 import team.redrock.prize.mapper.ActivityMapper;
 import team.redrock.prize.mapper.SpecifiedTypeMapper;
 import team.redrock.prize.pojo.response.SpecifiedActResponse;
@@ -19,6 +20,7 @@ import javax.servlet.http.HttpSession;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -32,12 +34,16 @@ public class SpecifiedActService {
     SpecifiedTypeMapper specifiedTypeMapper;
     @Autowired
     TemplateMessageService templateMessageService;
+    @Autowired
+    AsyncTaskService asyncTaskService;
 
 
-    public SpecifiedActResponse createSpecifiedAct(List<PrizeList> typeA, List<String> typeB,String activity, String url, HttpServletRequest request) throws SQLException {
-        SimpleDateFormat f_date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+    public SpecifiedActResponse createSpecifiedAct(List<PrizeList> typeA, List<String> typeB,String activity, String url, HttpServletRequest request) throws SQLException, ValidException {
+          final int[] result = {-1};
+        SimpleDateFormat f_date = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         String date = f_date.format(new Date());
-        long time = System.currentTimeMillis();
+
         HttpSession session = request.getSession();
         String actid;
           List<String>  actids = activityMapper.SelectActivityId(activity);
@@ -55,13 +61,10 @@ public class SpecifiedActService {
 
           log.info("________________________________________sessionname = " + session.getAttribute("SESSIONNAME"));
 
-          Map<String,String> rewards = new HashMap<>();
+          Map<String,String> Arewards = new HashMap<>();
         List<Map<String, String>> failedMsg = new ArrayList<>();
         String rewardID;
         for (int i = 0; i < typeA.size(); i++) {
-
-//            TestThread testThread = ApplicationContextProvider.getBean("test",TestThread.class);
-//            System.out.println(testThread);
 
             PrizeList prizeList = typeA.get(i);
             rewardID = getID(prizeList.getReward());
@@ -70,22 +73,41 @@ public class SpecifiedActService {
             for (int j = 0; j < prizeList.getReqStudents().size(); j++) {
                 ReqStudent reqStudent = prizeList.getReqStudents().get(j);
                 String msg = prizeList.getSendmsg();
-//                String openid = PosterUtil.getOpenID(reqStudent.getStuid());
-                String openid = "";
+                String openid = PosterUtil.getOpenID(reqStudent.getStuid());
+
                 if (openid.equals("0")) {
-                    return new SpecifiedActResponse(-2, "Fail to get openid", actid, null);
+                    throw new ValidException("Fail to get openid");
                 }
                 System.out.println("---------" + openid + "---------------");
                 StudentA student = new StudentA(openid, reqStudent.getStuname(), reqStudent.getCollege(), reqStudent.getStuid(), Integer.parseInt(reqStudent.getTelephone()), actid, date, prizeList.getReward(), 0,rewardID);
                 specifiedTypeMapper.insert(student);
-              int result = 2;
+                Arewards.put(prizeList.getReward(),rewardID);
 
-                     result = getFailedSend(templateMessageService.sendMsg(msg, openid, reqStudent.getStuname(), activity, prizeList.getReward(), "未领取"));
-                    System.out.println("result:"+result);
+//
+//                try {
+//                    String response = asyncTaskService.executeAsyncTask(openid,msg, activity, prizeList.getReward(), date, prizeList.getPrizeDate(), prizeList.getRemark()).get();
+//                    result = getFailedSend(response);
+//
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                } catch (ExecutionException e) {
+//                    e.printStackTrace();
+//                }
+                    new Thread(() ->{
+                        try {
+                            result[0]=getFailedSend(templateMessageService.sendMsg(openid,msg, activity, prizeList.getReward(), date, prizeList.getPrizeDate(), prizeList.getRemark()));
+                            Thread.sleep(1000);
+                            log.error("内部地result"+result[0]);
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
 
+                }).start();
 
-
-                if (result == 1) {
+                log.error("result:"+result[0]);
+                if (result[0] == 1) {          //每个线程都会加1
                     Map<String, String> stuMsg = new HashMap<>();
                     stuMsg.put("stuname", student.getStuname());
                     stuMsg.put("college", student.getCollege());
@@ -93,25 +115,29 @@ public class SpecifiedActService {
                     stuMsg.put("telephone", reqStudent.getTelephone());
                     stuMsg.put("reward",prizeList.getReward());
                     failedMsg.add(stuMsg);
+                    log.info("发送失败+1");
+
                 }
             }
         }
 
+        Map<String,String> Brewards = new HashMap<>();
             for(int m =0;m<typeB.size();m++ ){
                 rewardID = getID(typeB.get(m));
                 activityMapper.insert(new Activity(activity, (String) session.getAttribute("SESSIONNAME"), url,  1, date, actid,typeB.get(m),rewardID));
+                Brewards.put(typeB.get(m),rewardID);
             }
 
 
         if (failedMsg.isEmpty()) {
-            return new SpecifiedActResponse(0, "success", actid, failedMsg);
+            return new SpecifiedActResponse(200, "success", actid, Arewards,Brewards,failedMsg);
         }
 
-        return new SpecifiedActResponse(0,"have fail sending!",actid,failedMsg);
+        return new SpecifiedActResponse(200,"have fail sending!",actid,Arewards,Brewards,failedMsg);
     }
 
 
-    private int getFailedSend(String httpResponse){
+    public int getFailedSend(String httpResponse){
         String text = null;
         Pattern pattern = Pattern.compile("\\\"errmsg\\\":\\\"(.*?)\\\"");
         Matcher matcher = pattern.matcher(httpResponse);
@@ -137,10 +163,7 @@ public class SpecifiedActService {
     }
 
 
-    @Async
-    public void executeAsyncTask(Integer n){
-        System.out.println("异步任务执行："+n);
-    }
+
 
 
 

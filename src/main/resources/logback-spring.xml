@@ -20,7 +20,8 @@
 
     <!-- 定义日志存储的路径，不要配置相对路径 -->
     <!--<property name="FILE_PATH" value="D:/Desktop/log/spring-log.%d{yyyy-MM-dd}.%i.log"/>-->
-    <property name="FILE_PATH" value="/var/log/tyre_log/spring-log.%d{yyyy-MM-dd}.%i.log"/>
+    <!--<property name="FILE_PATH" value="/var/lib/tomcat8/logs/prize_log/spring-log.%d{yyyy-MM-dd}.%i.log"/>-->
+    <property name="FILE_PATH" value="${catalina.base}/logs/prize_log/spring-log.%d{yyyy-MM-dd}.%i.log"/>
 
     <!-- 控制台输出日志 -->
     <appender name="console" class="ch.qos.logback.core.ConsoleAppender">

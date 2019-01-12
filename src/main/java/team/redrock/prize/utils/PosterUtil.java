@@ -25,7 +25,7 @@ public class PosterUtil {
      */
     public static String getOpenID(String stuId) {
 
-        System.out.println("调用此处");
+        System.out.println("调用此处"+stuId);
         PrintWriter out = null;
         BufferedReader reader = null;
         HttpURLConnection connection = null;

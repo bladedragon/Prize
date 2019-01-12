@@ -16,6 +16,8 @@ public class SpecifiedActResponse {
   private  int status;
     private String info;
    private  String actid;
+   private Map<String ,String> AactID;
+    private Map<String,String> BactID;
    private  List<Map<String ,String>> msg;
 
 

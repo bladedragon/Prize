@@ -1,4 +1,4 @@
-package team.redrock.prize.pojo;
+package team.redrock.prize;
 
 
 

@@ -14,7 +14,7 @@ import java.util.Map;
 public class GetActIdController {
 
     @PostMapping("/getActId")
-    public Map<String, String> getActId(@RequestParam(value = "token",required = false) String token, @RequestParam("actname") String actname, HttpServletRequest request) throws ValidException {
+    public Map<String, String> getActId(@RequestParam(value = "token",required = false) String token, @RequestParam(value = "actname",defaultValue = "") String actname, HttpServletRequest request) throws ValidException {
 
         if(null==token||!request.getSession().getAttribute("SESSIONID").equals(token)){
             throw new ValidException("token验证无效");

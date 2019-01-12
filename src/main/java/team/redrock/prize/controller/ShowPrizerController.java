@@ -22,34 +22,36 @@ public class ShowPrizerController {
     ShowPrizerService showPrizerService;
 
     @PostMapping("/showPrizerA")
-    public ShowPrizerAResponse showPrizerA(@RequestParam("actId") String actId, @RequestParam(value = "type",defaultValue = "0") int type, @RequestParam(value = "page",defaultValue = "0")int page,
-                                           @RequestParam(value = "pagesize",defaultValue = "5")int pagesize,@RequestParam(value = "token",required = false) String token,HttpServletRequest request) throws ValidException {
-        if(null==token||!request.getSession().getAttribute("SESSIONID").equals(token)){
+    public ShowPrizerAResponse showPrizerA(@RequestParam(value = "actid", defaultValue = "") String actId, @RequestParam(value = "type", defaultValue = "0") int type, @RequestParam(value = "page", defaultValue = "0") int page,
+                                           @RequestParam(value = "pagesize", defaultValue = "5") int pagesize, @RequestParam(value = "token", required = false) String token, HttpServletRequest request) throws ValidException {
+        if (null == token || !request.getSession().getAttribute("SESSIONID").equals(token)) {
             throw new ValidException("token验证无效");
         }
 
-        if(pagesize==0){
+        if (pagesize == 0) {
             throw new ValidException("Pagesize cannot be zero");
         }
 
-        ShowPrizerAResponse response = showPrizerService.showPrizerA(actId,page,pagesize);
+        ShowPrizerAResponse response = showPrizerService.showPrizerA(actId, page, pagesize);
 
         return response;
     }
 
 
     @PostMapping("/showPrizerB")
-    public ShowPrizerBResponse showPrizerB(@RequestParam(value = "token",required = false) String token, @RequestParam("actId") String actId, @RequestParam(value = "page",defaultValue = "0")int page, @RequestParam(value = "pagesize",defaultValue = "5")int pagesize, HttpServletRequest request) throws ValidException {
+    public ShowPrizerBResponse showPrizerB(@RequestParam(value = "token", required = false) String token, @RequestParam(value = "actid", defaultValue = "") String actId, @RequestParam(value = "page", defaultValue = "0") int page, @RequestParam(value = "pagesize", defaultValue = "5") int pagesize, HttpServletRequest request) throws ValidException {
 
-        if(null==token||!request.getSession().getAttribute("SESSIONID").equals(token)){
+        if (null == token || !request.getSession().getAttribute("SESSIONID").equals(token)) {
             throw new ValidException("token验证无效");
         }
-        if(pagesize==0){
+        if (pagesize == 0) {
             throw new ValidException("Pagesize cannot be zero");
         }
 
-        ShowPrizerBResponse response = showPrizerService.showPrizerB(actId,page,pagesize);
+        ShowPrizerBResponse response = showPrizerService.showPrizerB(actId, page, pagesize);
 
         return response;
     }
 }
+
+
