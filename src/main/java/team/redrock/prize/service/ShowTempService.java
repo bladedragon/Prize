@@ -15,7 +15,9 @@ public class ShowTempService {
     public ShowTempReponse showTemp(String actid){
 
     TempAct tempAct = tempActRedisTemplate.opsForValue().get(actid);
+
     if(tempAct==null){
+
         return new ShowTempReponse(-2,"cache is not exist",null);
     }
     return new ShowTempReponse(0,"success",tempAct);

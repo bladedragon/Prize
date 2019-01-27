@@ -46,7 +46,7 @@ public class SpecifiedActService {
 
         HttpSession session = request.getSession();
         String actid;
-          List<String>  actids = activityMapper.SelectActivityId(activity);
+        List<String>  actids = activityMapper.SelectActivityId(activity);
 
           if(actids.isEmpty()){
             actid = getID(activity);
@@ -80,6 +80,7 @@ public class SpecifiedActService {
                 }
                 System.out.println("---------" + openid + "---------------");
                 StudentA student = new StudentA(openid, reqStudent.getStuname(), reqStudent.getCollege(), reqStudent.getStuid(), Integer.parseInt(reqStudent.getTelephone()), actid, date, prizeList.getReward(), 0,rewardID);
+                activityMapper.deleteActTemp(actid);
                 specifiedTypeMapper.insert(student);
                 Arewards.put(prizeList.getReward(),rewardID);
 

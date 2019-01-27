@@ -21,13 +21,16 @@ public interface ActivityMapper {
     @Delete("Delete from activity where actid = #{actid}")
     void deleteAct(String actid);
 
+    @Delete("Delete from activity where status = 2 and actid = #{actid}")
+    void deleteActTemp(String actid);
+
     @Select("Select actid from activity where actname = #{actname}")
     List<String> SelectActivityId(@Param("actname") String actname);
 
-    @Select("Select ifnull((Select actname from activity where actid = #{actid}),'')")
+    @Select("Select  ifnull((Select actname from activity where actid = #{actid}),'')")
     String SelectActname(@Param("actid") String actnid);
 
-    @Select("Select actname,founder,url,status,time,actid from activity group by actname")
+    @Select("Select actname,founder,url,status,time,actid from activity group by actname,founder,url,status,time,actid")
     List<ShowAct> SelectActAll();
 
     @Delete("Delete from specified_type where actid = #{actid}")
@@ -36,5 +39,7 @@ public interface ActivityMapper {
     @Delete("Delete from non_specified_type where actid = #{actid}")
     void deleteNoSpecifiedType(String actid);
 
+    @Select("Select ifnull((Select reward from activity where actid = #{actid}and rewardID = #{rewardID}),'')")
+    String SelectReward(@Param("actid")String actid,@Param("rewardID")String rewardID);
 
 }

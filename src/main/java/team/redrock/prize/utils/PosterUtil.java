@@ -14,6 +14,7 @@ public class PosterUtil {
     //    @Value("${jwzx.verify}")
 //    private String verUrl;
     private static String verUrl = "http://hongyan.cqupt.edu.cn/MagicLoop/index.php?s=/addon/Api/Api/getOpenidByStuId";
+    private static String getuserinfoUrl="http://hongyan.cqupt.edu.cn/MagicLoop/index.php?s=/addon/Api/Api/bindVerify";
     private static String timestamp = "1505118409";
     private static String string = "asdfghjkl";
     private static String secret = "e49e89f65d0319bdce2d4740c5b2244af2e774e8";
@@ -85,6 +86,13 @@ public class PosterUtil {
 
     }
 
+
+    /**
+     * 通过openid获取学生的个人信息
+     * @param openId
+     * @return
+     */
+
     public static StuInfoResponseBean getStuInfo(String openId){
         System.out.println("调用此处");
         PrintWriter out = null;
@@ -93,8 +101,8 @@ public class PosterUtil {
         StringBuilder builder = null;
         try {
             //创建一个url
-            System.out.println("url:" + verUrl);
-            URL url = new URL(verUrl);
+            System.out.println("url:" + getuserinfoUrl);
+            URL url = new URL(getuserinfoUrl);
             connection = (HttpURLConnection) url.openConnection();
             // 发送POST请求必须设置如下两行
             connection.setRequestMethod("POST");
@@ -106,7 +114,7 @@ public class PosterUtil {
 
             // 获取URLConnection对象对应的输出流
             out = new PrintWriter(connection.getOutputStream());
-            String content = "opeid=" + URLEncoder.encode(openId, "utf8") + "&timestamp=" + URLEncoder.encode(timestamp, "utf8")
+            String content = "openid=" + URLEncoder.encode(openId, "utf8") + "&timestamp=" + URLEncoder.encode(timestamp, "utf8")
                     + "&string=" + URLEncoder.encode(string, "utf8") + "&secret=" + URLEncoder.encode(secret, "utf8");
             out.print(content);
 //            // 发送请求参数

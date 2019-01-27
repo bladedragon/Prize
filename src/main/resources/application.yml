@@ -2,11 +2,21 @@ server:
   port: 80
 
 spring:
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    cache: false
+    encoding: UTF-8
+
+
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/prize?characterEncoding=utf8&useSSL=false&serverTimezone=UTC
+    url: jdbc:mysql://127.0.0.1/prize?characterEncoding=utf8&useSSL=false&serverTimezone=UTC
     driver-class-name: com.mysql.cj.jdbc.Driver
-    username: llp
-    password: Redr0ck;D0nt;Fuck;Me;
+    username: root
+    password:
+#    url: jdbc:mysql://10.9.29.223:3306/prize?characterEncoding=utf8&useSSL=false&serverTimezone=UTC
+#    username: llp
+#    password: Redr0ck;D0nt;Fuck;Me;
 
   redis:
     host: localhost
@@ -26,9 +36,10 @@ mybatis:
 
 
 prjPath: accept_prize/
-WX_APPID: "wxaf05acd677a29f25"
+#WX_APPID: "wxaf05acd677a29f25"
+WX_APPID: "wx81a4a4b77ec98ff4"
 WX_APPSECRET: "58e74928490b55bebb483fc526828bfc"
-REDIRECT_URI: " http://zblade.top"
+REDIRECT_URI: " http://65v7bh.natappfree.cc"
 
 OPENIDTemp: "o08-k1CAlytHhsEFrnfnaA-W4FDo"
 TEMPLATE_ID: "1RvFGl6KG5owcjPNuNZ9iJsVonuMWqHZpGmlsgFi2eY"

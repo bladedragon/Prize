@@ -14,6 +14,9 @@ import team.redrock.prize.service.NSpecifiedActService;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * 已废弃
+ */
 
 @Controller
 @Slf4j

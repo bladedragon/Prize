@@ -22,7 +22,7 @@ public class LoginConfiguration implements WebMvcConfigurer {
 
     public void addInterceptors(InterceptorRegistry registry) {
         //拦截所有的controller
-        registry.addInterceptor(loginInterceptor()).addPathPatterns("/**").excludePathPatterns("/wx/token").excludePathPatterns("/getPrizeA/**").excludePathPatterns("/getPrizeB/**");
+        registry.addInterceptor(loginInterceptor()).addPathPatterns("/**").excludePathPatterns("/wx/token").excludePathPatterns("/getPrizeA/**").excludePathPatterns("/getPrizeB/**").excludePathPatterns("/temp/**");
     }
 
 }

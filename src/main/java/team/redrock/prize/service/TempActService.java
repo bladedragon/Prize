@@ -4,10 +4,7 @@ package team.redrock.prize.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
-import team.redrock.prize.bean.Activity;
-import team.redrock.prize.bean.PrizeList;
-import team.redrock.prize.bean.SpecifiedAct;
-import team.redrock.prize.bean.TempAct;
+import team.redrock.prize.bean.*;
 import team.redrock.prize.exception.ValidException;
 import team.redrock.prize.mapper.ActivityMapper;
 import team.redrock.prize.pojo.response.NSpecifiedActResponse;
@@ -37,8 +34,8 @@ public class TempActService {
 
         TempAct tempAct = new TempAct();
         tempAct.setActivity(activity);
-        tempAct.setTypeA(typeA);
-        tempAct.setTypeB(typeB);
+        tempAct.setTypeA_temp(new TypeA_Temp("typeA",typeA));
+        tempAct.setTypeB_temp(new TypeB_Temp("typeB",typeB));
 String actid = getID(activity);
 
         int num = activityMapper.insert(new Activity(activity, (String) session.getAttribute("SESSIONNAME"),"",2,date,actid,"",""));

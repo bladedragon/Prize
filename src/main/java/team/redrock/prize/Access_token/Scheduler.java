@@ -47,7 +47,7 @@ private String WX_APPSECRET;
         String AppId = WX_APPID;
         String secret = WX_APPSECRET;
         String url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=" + grant_type + "&appid=" + AppId + "&secret=" + secret;
-       logger.info("getUrl==>"+url);
+        logger.info("getUrl==>"+url);
 
         try {
             URL urlGet = new URL(url);
@@ -65,12 +65,12 @@ private String WX_APPSECRET;
             JSONObject demoJson = JSONObject.fromObject(message);
 
             access_token = demoJson.getString("access_token");
-            //logger.info("get access_token==>"+access_token);
-            is.close();
-            //System.out.println("==============结束获取access_token===============");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        //logger.info("get access_token==>"+access_token);
+        is.close();
+        //System.out.println("==============结束获取access_token===============");
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
 
 //        System.out.println("==============开始写入access_token===============");
         redisTokenHelper.save("global_token", access_token);
@@ -80,15 +80,15 @@ private String WX_APPSECRET;
     }
 
     public String getAccess_Token() {
-        String access_token =  redisTokenHelper.getObject("global_token");
-        if (access_token.equals("1")) {
-            System.out.println("获取access_token");
+            String access_token =  redisTokenHelper.getObject("global_token");
+            if (access_token.equals("1")) {
+                System.out.println("获取access_token");
 //            getAccessToken();
-            getAccessTokenApi();
-            access_token = (String) redisTokenHelper.getObject("global_token");
-            System.out.println("accesstoken"+access_token);
-        }
-        return (String) access_token;
+                getAccessTokenApi();
+                access_token = (String) redisTokenHelper.getObject("global_token");
+                System.out.println("accesstoken"+access_token);
+            }
+            return (String) access_token;
     }
 
 
@@ -141,10 +141,10 @@ private String WX_APPSECRET;
     }
 
 //
-//    public static void main(String[] args) {
-//        String token = getAccessTokenApi();
-//        System.out.println("getaccesstoken="+token);
-//    }
+////    public static void main(String[] args) {
+////        String token = getAccessTokenApi();
+////        System.out.println("getaccesstoken="+token);
+////    }
 
 
 

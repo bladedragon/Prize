@@ -6,8 +6,9 @@ import org.springframework.stereotype.Service;
 import team.redrock.prize.bean.StuInfoResponseBean;
 import team.redrock.prize.bean.StudentA;
 import team.redrock.prize.bean.StudentB;
-import team.redrock.prize.bean.WXAccount;
+
 import team.redrock.prize.exception.ValidException;
+import team.redrock.prize.mapper.ActivityMapper;
 import team.redrock.prize.mapper.GetPrizerMapper;
 import team.redrock.prize.mapper.SpecifiedTypeMapper;
 import team.redrock.prize.pojo.response.GetPrizeResponse;
@@ -27,25 +28,33 @@ public class GetprizeAService {
     GetPrizerMapper getPrizerMapper;
     @Autowired
     SpecifiedTypeMapper specifiedTypeMapper;
+    @Autowired
+    ActivityMapper activityMapper;
 
-    public GetPrizeResponse getPrizeA(String openid,String actid,String reward ){
+    public GetPrizeResponse getPrizeA(String openid,String actid,String rewardid ){
 
-        System.out.println(reward);
-        StudentA students = getPrizerMapper.findStudentA(openid,actid,reward);
+        System.out.println(rewardid);
+        List<StudentA> students = getPrizerMapper.findStudentA(openid,actid,rewardid);
         System.out.println(students);
         log.error(String.valueOf(students));
 
-        if(students==null){
+        String reward = activityMapper.SelectReward(actid,rewardid);
+
+        if(null==reward||reward.equals("")){
+            return new GetPrizeResponse(-4,"Can't find activity or reward");
+        }
+
+        if(null==students||students.size()==0){
             return new GetPrizeResponse(-3,"No prizer's info");
         }else {
-//            StudentA student = students.get(0);
 
-//            if(students.size()!=1){
-//                log.error("ZLOG==>Data has repeated insert!" );
-//            }
+            if(students.size()!=1){
+                log.error("ZLOG==>Data has repeated insert!" );
+            }
 
-            if(students.getStatus()!=0){
-                System.out.println(students.getStatus());
+            StudentA student = students.get(0);
+            if(student.getStatus()!=0){
+                System.out.println(student.getStatus());
                 return new GetPrizeResponse(1,"Fail to get again");
 
             }else{
@@ -56,14 +65,21 @@ public class GetprizeAService {
 
     }
 
-    public GetPrizeResponse getPrizeB(WXAccount wxAccount, String actid,String reward) throws ValidException {
-        String openid = wxAccount.getOpenid();
+    public GetPrizeResponse getPrizeB(String openid, String actid,String rewardid) throws ValidException {
+//        String openid = wxAccount.getOpenid();            //利用openid获取学生的真实姓名
         if(null==openid||openid.equals("")){
 
             return new GetPrizeResponse(-2, "Fail to authorize");
         }
+
+        String reward = activityMapper.SelectReward(actid,rewardid);
+
+        if(null==reward||reward.equals("")){
+            return new GetPrizeResponse(-4,"Can't find activity or reward");
+        }
+
         StuInfoResponseBean sirbean;
-        StudentB studentB = getPrizerMapper.findStudentB(openid,actid,reward);
+        StudentB studentB = getPrizerMapper.findStudentB(openid,actid,rewardid);
         SimpleDateFormat f_date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String date = f_date.format(new Date());
 
@@ -75,7 +91,12 @@ public class GetprizeAService {
                 log.error("ZLOG==>Fail to use Api");
                 throw new ValidException("Fail to get stuNum");
             }
-            getPrizerMapper.insertNonSpecified_type(new StudentB(sirbean.getRealname(),sirbean.getStuId(),openid,actid,date,reward,getID(reward)));
+
+            log.info("真实姓名为==》"+sirbean.getRealname());
+            log.info("info==》"+sirbean.getInfo());
+
+            getPrizerMapper.insertNonSpecified_type(new StudentB(sirbean.getRealname(),sirbean.getStuId(),openid,actid,date,reward,rewardid));
+
             return new GetPrizeResponse(200,"success");
         }
     }

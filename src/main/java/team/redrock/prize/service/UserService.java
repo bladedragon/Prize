@@ -49,7 +49,7 @@ public class UserService {
                 long time =System.currentTimeMillis();
                 if(session.getAttribute("SESSIONID")!=null&&stringRedisTemplate.opsForHash().hasKey("SESSIONID",username))
                 {
-                       return new UserResponse(1,"你已登录", (String) session.getAttribute("SESSIONID"));
+                       return new UserResponse(1,"你已登录", (String)stringRedisTemplate.opsForHash().get("SESSIONID",username));
 
                 }
                     SessionUtil sessionUtil = new SessionUtil();
@@ -60,6 +60,7 @@ public class UserService {
                     Cookie cookie = new Cookie("isLogined",usersession);
                     cookie.setPath(request.getContextPath());
                     cookie.setMaxAge(100000);
+                    cookie.setHttpOnly(false);
                     response.addCookie(cookie);
 //                    //设置session
                 System.out.println("-----------------------"+(System.currentTimeMillis()-time)+"-------------------------");

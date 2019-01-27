@@ -22,8 +22,8 @@ import java.util.Map;
 public class TemplateMessageService {
 
 
-    @Value("${OPENIDTemp}")
-    private String fromUserName;
+//    @Value("${OPENIDTemp}")
+////    private String fromUserName;
     @Value("${TEMPLATE_ID}")
     private String template_id;
     @Value("${SENDURL}")

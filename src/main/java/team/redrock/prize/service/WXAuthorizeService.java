@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import team.redrock.prize.Access_token.Scheduler;
 import team.redrock.prize.bean.WXAccount;
 import team.redrock.prize.utils.HttpUtil;
 import team.redrock.prize.utils.UserInfoUtil;
