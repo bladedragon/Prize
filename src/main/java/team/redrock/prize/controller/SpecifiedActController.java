@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import team.redrock.prize.bean.PrizeList;
+import team.redrock.prize.bean.RewardList;
 import team.redrock.prize.bean.SpecifiedAct;
 import team.redrock.prize.exception.ValidException;
 import team.redrock.prize.pojo.response.SpecifiedActResponse;
@@ -38,24 +39,22 @@ if(specifiedAct==null){
          throw new ValidException("token验证无效");
      }
      List<PrizeList> typeA = specifiedAct.getTypeA();
-     List<String>  typeB = specifiedAct.getTypeB();
+     List<RewardList>  typeB = specifiedAct.getTypeB();
      String activity = specifiedAct.getActivity();
-     String url = specifiedAct.getActurl();
+
 
 
      if(activity==null||activity.isEmpty()){
          throw new  ValidException("活动名称不能为空");
      }
-     if(url==null||url.isEmpty()){
-         throw new  ValidException("活动路由不能为空");
-     }
+
 
 
      SpecifiedActResponse response = null;
      long time = System.currentTimeMillis();
      System.out.println("-----------controller-------------"+System.currentTimeMillis()+"-------------------------------------");
      try {
-         response = specifiedActService.createSpecifiedAct(typeA,typeB, activity, url, request);
+         response = specifiedActService.createSpecifiedAct(typeA,typeB, activity, request);
 
          System.out.println("----------after service---------------"+(System.currentTimeMillis()-time)+"-------------------------------------");
      } catch (SQLException e) {

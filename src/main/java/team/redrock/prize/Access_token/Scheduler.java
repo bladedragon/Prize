@@ -92,7 +92,7 @@ private String WX_APPSECRET;
     }
 
 
-    @Scheduled(fixedDelay = 7180000)
+
     public  String getAccessTokenApi() {
         System.out.println("------------------------getaccessTokenApi()-------------------------");
         String access_token = null;

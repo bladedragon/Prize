@@ -15,6 +15,6 @@ public class SpecifiedAct {
     private String activity;
     private String acturl;
     private List<PrizeList> typeA;
-    private List<String> typeB;
+    private List<RewardList> typeB;
 
 }

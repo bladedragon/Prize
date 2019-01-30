@@ -4,10 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Service;
-import team.redrock.prize.bean.Activity;
-import team.redrock.prize.bean.PrizeList;
-import team.redrock.prize.bean.ReqStudent;
-import team.redrock.prize.bean.StudentA;
+import team.redrock.prize.bean.*;
 import team.redrock.prize.exception.ValidException;
 import team.redrock.prize.mapper.ActivityMapper;
 import team.redrock.prize.mapper.SpecifiedTypeMapper;
@@ -39,7 +36,7 @@ public class SpecifiedActService {
 
 
 
-    public SpecifiedActResponse createSpecifiedAct(List<PrizeList> typeA, List<String> typeB,String activity, String url, HttpServletRequest request) throws SQLException, ValidException {
+    public SpecifiedActResponse createSpecifiedAct(List<PrizeList> typeA, List<RewardList> typeB, String activity, HttpServletRequest request) throws SQLException, ValidException {
           final int[] result = {-1};
         SimpleDateFormat f_date = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         String date = f_date.format(new Date());
@@ -64,18 +61,20 @@ public class SpecifiedActService {
           Map<String,String> Arewards = new HashMap<>();
         List<Map<String, String>> failedMsg = new ArrayList<>();
         String rewardID;
+
         for (int i = 0; i < typeA.size(); i++) {
 
             PrizeList prizeList = typeA.get(i);
             rewardID = getID(prizeList.getReward());
-            activityMapper.insert(new Activity(activity, (String) session.getAttribute("SESSIONNAME"), url, 1, date, actid, prizeList.getReward(),rewardID));
+
+            activityMapper.insert(new Activity(activity, (String) session.getAttribute("SESSIONNAME"),1, date, actid, prizeList.getReward(),rewardID,prizeList.getMark()));
 
             for (int j = 0; j < prizeList.getReqStudents().size(); j++) {
                 ReqStudent reqStudent = prizeList.getReqStudents().get(j);
                 String msg = prizeList.getSendmsg();
                 String openid = PosterUtil.getOpenID(reqStudent.getStuid());
 
-                if (openid.equals("0")) {
+                if (openid.equals("1")) {
                     throw new ValidException("Fail to get openid");
                 }
                 System.out.println("---------" + openid + "---------------");
@@ -86,19 +85,28 @@ public class SpecifiedActService {
 
 //
 //                try {
-//                    String response = asyncTaskService.executeAsyncTask(openid,msg, activity, prizeList.getReward(), date, prizeList.getPrizeDate(), prizeList.getRemark()).get();
-//                    result = getFailedSend(response);
-//
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                } catch (ExecutionException e) {
-//                    e.printStackTrace();
-//                }
+////                    String response = asyncTaskService.executeAsyncTask(openid,msg, activity, prizeList.getReward(), date, prizeList.getPrizeDate(), prizeList.getRemark()).get();
+////                    result = getFailedSend(response);
+////
+////                } catch (InterruptedException e) {
+////                    e.printStackTrace();
+////                } catch (ExecutionException e) {
+////                    e.printStackTrace();
+////                }
                     new Thread(() ->{
                         try {
                             result[0]=getFailedSend(templateMessageService.sendMsg(openid,msg, activity, prizeList.getReward(), date, prizeList.getPrizeDate(), prizeList.getRemark()));
                             Thread.sleep(1000);
                             log.error("内部地result"+result[0]);
+                            if(result[0]!=0){
+                                Map<String, String> stuMsg = new HashMap<>();
+                                stuMsg.put("stuname", student.getStuname());
+                                stuMsg.put("college", student.getCollege());
+                                stuMsg.put("stuid", student.getStuid());
+                                stuMsg.put("telephone", reqStudent.getTelephone());
+                                stuMsg.put("reward",prizeList.getReward());
+                                failedMsg.add(stuMsg);
+                            }
                         } catch (SQLException e) {
                             e.printStackTrace();
                         } catch (InterruptedException e) {
@@ -108,25 +116,21 @@ public class SpecifiedActService {
                 }).start();
 
                 log.error("result:"+result[0]);
-                if (result[0] == 1) {          //每个线程都会加1
-                    Map<String, String> stuMsg = new HashMap<>();
-                    stuMsg.put("stuname", student.getStuname());
-                    stuMsg.put("college", student.getCollege());
-                    stuMsg.put("stuid", student.getStuid());
-                    stuMsg.put("telephone", reqStudent.getTelephone());
-                    stuMsg.put("reward",prizeList.getReward());
-                    failedMsg.add(stuMsg);
-                    log.info("发送失败+1");
+//                if (result[0] == 1) {          //每个线程都会加1
+//
+//
+//                    log.info("发送失败+1");
 
-                }
+//                }
             }
         }
 
         Map<String,String> Brewards = new HashMap<>();
             for(int m =0;m<typeB.size();m++ ){
-                rewardID = getID(typeB.get(m));
-                activityMapper.insert(new Activity(activity, (String) session.getAttribute("SESSIONNAME"), url,  1, date, actid,typeB.get(m),rewardID));
-                Brewards.put(typeB.get(m),rewardID);
+                RewardList rewardList = typeB.get(m);
+                rewardID = getID(rewardList.getReward());
+                activityMapper.insert(new Activity(activity, (String) session.getAttribute("SESSIONNAME"),1, date, actid,rewardList.getReward(),rewardID,rewardList.getMark()));
+                Brewards.put(rewardList.getReward(),rewardID);
             }
 
 

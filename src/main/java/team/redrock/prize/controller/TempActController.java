@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import team.redrock.prize.bean.PrizeList;
+import team.redrock.prize.bean.RewardList;
 import team.redrock.prize.bean.SpecifiedAct;
 import team.redrock.prize.bean.TempAct;
 import team.redrock.prize.exception.ValidException;
@@ -35,7 +36,7 @@ public class TempActController {
             throw new ValidException("Param cannnot be null");
         }
         List<PrizeList> typeA = specifiedAct.getTypeA();
-        List<String>  typeB = specifiedAct.getTypeB();
+        List<RewardList>  typeB = specifiedAct.getTypeB();
         String activity = specifiedAct.getActivity();
 
         NSpecifiedActResponse response = tempActService.getTempAct(typeA,typeB,activity,request);

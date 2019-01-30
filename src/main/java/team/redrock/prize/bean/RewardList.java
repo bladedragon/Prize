@@ -1,21 +1,16 @@
 package team.redrock.prize.bean;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
-
+import org.springframework.beans.factory.annotation.Autowired;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PrizeList {
+public class RewardList {
+
     private String mark;
     private String reward;
-    private String prizeDate;
-    private String sendmsg;
-    private String remark;
-    private List<ReqStudent> reqStudents;
-
 }

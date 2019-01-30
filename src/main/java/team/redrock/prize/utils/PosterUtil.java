@@ -3,6 +3,7 @@ package team.redrock.prize.utils;
 import com.alibaba.fastjson.JSON;
 import team.redrock.prize.bean.OpenidResponseBean;
 import team.redrock.prize.bean.StuInfoResponseBean;
+import team.redrock.prize.exception.ValidException;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -72,14 +73,19 @@ public class PosterUtil {
 
         }
 
+        OpenidResponseBean object = null;
+try{
+     object = JSON.parseObject(builder.toString(), OpenidResponseBean.class);
+}catch (NullPointerException e){
+    e.printStackTrace();
+    return "0";
+}
 
-        OpenidResponseBean object = JSON.parseObject(builder.toString(), OpenidResponseBean.class);
-
-        if(object==null){
-            return "0";
+        String openid = "0";
+        if(object.getStatus()!=0){
+            openid = object.getOpenid().get(0);
         }
 
-        String openid = object.getOpenid().get(0);
 
         return openid;
 
@@ -94,7 +100,7 @@ public class PosterUtil {
      */
 
     public static StuInfoResponseBean getStuInfo(String openId){
-        System.out.println("调用此处");
+
         PrintWriter out = null;
         BufferedReader reader = null;
         HttpURLConnection connection = null;
@@ -140,6 +146,7 @@ public class PosterUtil {
         }
 
         StuInfoResponseBean object = JSON.parseObject(builder.toString(), StuInfoResponseBean.class);
+
         return object;
     }
 }

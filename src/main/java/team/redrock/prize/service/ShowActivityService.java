@@ -22,12 +22,12 @@ public class ShowActivityService {
     ActivityMapper activityMapper;
 
     public ShowActivityResponse showActivity(int start,int pagesize){
-long time = System.currentTimeMillis();
-        System.out.println("-----------------------"+(System.currentTimeMillis()-time)+"-------------------------");
+
+
         PageHelper.startPage(start,pagesize);
         List<ShowAct> activities =activityMapper.SelectActAll();
 
-        System.out.println("-----------------------"+(System.currentTimeMillis()-time)+"-------------------------");
+
         System.out.println("----"+activities);
         PageInfo<ShowAct> page = new PageInfo<>(activities);
 
@@ -38,7 +38,7 @@ long time = System.currentTimeMillis();
         }else{
             total = sum/pagesize;
         }
-        System.out.println("-----------------------"+(System.currentTimeMillis()-time)+"-------------------------");
+
         return new ShowActivityResponse(200,"success",total ,page.getList());
     }
 }

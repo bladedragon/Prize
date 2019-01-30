@@ -36,7 +36,7 @@ mybatis:
 
 
 prjPath: accept_prize/
-#WX_APPID: "wxaf05acd677a29f25"
+
 WX_APPID: "wx81a4a4b77ec98ff4"
 WX_APPSECRET: "58e74928490b55bebb483fc526828bfc"
 REDIRECT_URI: " http://65v7bh.natappfree.cc"

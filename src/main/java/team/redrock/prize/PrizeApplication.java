@@ -9,6 +9,7 @@ import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.ApplicationContext;
 
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.WebApplicationInitializer;
 import team.redrock.prize.Access_token.Scheduler;
 
@@ -16,7 +17,7 @@ import team.redrock.prize.service.TemplateMessageService;
 
 
 
-
+//@EnableScheduling
 @ServletComponentScan
 @SpringBootApplication
 @MapperScan("team.redrock.prize.mapper")

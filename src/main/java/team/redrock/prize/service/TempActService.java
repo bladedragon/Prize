@@ -26,7 +26,7 @@ public class TempActService {
     @Autowired
     private ActivityMapper activityMapper;
 
-    public NSpecifiedActResponse getTempAct(List<PrizeList> typeA, List<String> typeB, String activity, HttpServletRequest request) throws ValidException {
+    public NSpecifiedActResponse getTempAct(List<PrizeList> typeA, List<RewardList> typeB, String activity, HttpServletRequest request) throws ValidException {
         SimpleDateFormat f_date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String date = f_date.format(new Date());
         long time = System.currentTimeMillis();
@@ -34,11 +34,11 @@ public class TempActService {
 
         TempAct tempAct = new TempAct();
         tempAct.setActivity(activity);
-        tempAct.setTypeA_temp(new TypeA_Temp("typeA",typeA));
-        tempAct.setTypeB_temp(new TypeB_Temp("typeB",typeB));
+        tempAct.setTypeA(typeA);
+        tempAct.setTypeB(typeB);
 String actid = getID(activity);
 
-        int num = activityMapper.insert(new Activity(activity, (String) session.getAttribute("SESSIONNAME"),"",2,date,actid,"",""));
+        int num = activityMapper.insert(new Activity(activity, (String) session.getAttribute("SESSIONNAME"),2,date,actid,"","",""));
         System.out.println(num);
         if(num==0){
            throw new ValidException("插入数据库失败");
