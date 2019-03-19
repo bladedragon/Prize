@@ -4,12 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Acturl {
-    String url;
-    String reward;
-
-
+public class AddActUrl {
+    private String token;
+    private String actid;
+    private List<Acturl> acturls;
 }

@@ -15,6 +15,8 @@ public class StudentB {
     private String add_time;
     private String reward;
     private String rewardID;
+    private int status;
+    private int push_status;
 
 
 

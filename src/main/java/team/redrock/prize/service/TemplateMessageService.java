@@ -33,13 +33,13 @@ public class TemplateMessageService {
    private  Scheduler scheduler;
     @Autowired
     private HttpUtil httpUtil;
-    long time =System.currentTimeMillis();
+
 
 
     private  TemplateMsg getTemplate(String openid,String msg,String activity,String award,String addtime,String prizetime,String remark) throws SQLException {
 
         TemplateMsg templateMsg = new TemplateMsg();
-        System.out.println(template_id);
+
         Map<String,TemplateData>  dataMap = new HashMap<>();
         dataMap.put("first",new TemplateData(msg,"#173177"));
             dataMap.put("keyword1",new TemplateData(activity,"#173177"));
@@ -57,26 +57,18 @@ public class TemplateMessageService {
     }
 //    @Async("getAsyncExecutor")
     public String  sendMsg(String openid,String msg,String activity,String award,String addtime,String prizetime,String remark) throws SQLException {
-        time = System.currentTimeMillis();
+
         String accesstoken = "";
-        System.out.println("---------start send ----------------"+(System.currentTimeMillis()-time)+"-------------------------------------");
 
-        System.out.println("here");
-
-             accesstoken= scheduler.getAccess_Token();
-
-        System.out.println(accesstoken);
-        System.out.println("------------get token-------------"+(System.currentTimeMillis()-time)+"-------------------------------------");
+        accesstoken= scheduler.getAccess_Token();
+        log.error("方法内调用accesstoken="+accesstoken);
         String url = sendurl+accesstoken;
         String HttpResponse  = "0";
 
         TemplateMsg templateMsg = getTemplate(openid,msg,activity, award, addtime, prizetime, remark);
 
-        System.out.println("------------getTemplate-------------"+(System.currentTimeMillis()-time)+"-------------------------------------");
         try {
-
              HttpResponse = httpUtil.httpRequestToString(url,"POST", JSON.toJSONString(templateMsg));
-            System.out.println("-------------http------------"+(System.currentTimeMillis()-time)+"-------------------------------------");
         } catch (NoSuchProviderException e) {
             e.printStackTrace();
            log.error("ZLOG==> Request error");

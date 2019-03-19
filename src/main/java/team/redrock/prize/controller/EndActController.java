@@ -11,25 +11,28 @@ import team.redrock.prize.pojo.response.GetPrizeResponse;
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
-public class DeleteActController {
+public class EndActController {
 
     @Autowired
     ActivityMapper activityMapper;
 
-    @PostMapping("/deleteActivity")
-    public GetPrizeResponse deleteActivity(@RequestParam(value = "token",required = false)String token,
-                                           @RequestParam(value = "actid",defaultValue = "") String actid, HttpServletRequest request) throws ValidException {
+    @PostMapping("/EndActivity")
+    public GetPrizeResponse EndAct(@RequestParam(value = "token",required = false)String token,
+                                   @RequestParam(value = "actid",defaultValue = "") String actid,
+                                   HttpServletRequest request) throws ValidException {
 
-        if(actid.equals("")){
-            throw new ValidException("Param cannnot be null");
-        }
         if(null==token||!request.getSession().getAttribute("SESSIONID").equals(token)){
             throw new ValidException("token验证无效");
         }
+        if(actid.equals("")){
+            return new GetPrizeResponse(-2,"Param cannnot be null");
+        }
 
-        activityMapper.deleteAct(actid);
-        activityMapper.deleteSpecifiedType(actid);
-        activityMapper.deleteNoSpecifiedType(actid);
+        int result = activityMapper.UpdateActStatus(actid,3);
+
+        if(result == 0){
+            return new GetPrizeResponse(-2,"no modify");
+        }
 
         return new GetPrizeResponse(200,"success");
     }

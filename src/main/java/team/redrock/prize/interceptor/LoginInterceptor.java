@@ -29,32 +29,26 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 
         // 初始化拦截器，设置不拦截路径
         String noMatchPath = ".*/(login).*";
+        String resourcePath = ".*/(file).*";
         String path = request.getServletPath();
 
         String errorPath = ".*/(error).*";
 
-        System.out.println("资源请求路径：" + path);
         if(path.matches(errorPath)){
-
-
             throw new ValidException("Internal Server Error");
         }
-        if (path.matches(noMatchPath)) {
+        if (path.matches(noMatchPath)||path.matches(resourcePath)) {
 
-            log.error("不拦截：" + noMatchPath);
             // 授权路径，不拦截
             return true;
         } else if (session.getAttribute("SESSIONID") != null) {
-long time = System.currentTimeMillis();
+
 
             String token = request.getParameter("token");
             if(token==null||token.equals("")){
                 RequestWrapper requestWrapper = new RequestWrapper(request);
                 String body = requestWrapper.getBody();
             }
-
-
-
 
             Map<Object, Object> sessionMap =  stringRedisTemplate.opsForHash().entries("SESSIONID");
             for (Object sessionId:sessionMap.values() ) {
@@ -67,15 +61,8 @@ long time = System.currentTimeMillis();
 
         }
 
-//            if(stringRedisTemplate.hasKey("SESSIONID")){
-//                System.out.println("has key");
-//            }else{
-//                System.out.println("has not key");
-//            }
-
-        System.out.println(session.getAttribute("SESSIONID"));
+        log.info("ZLOG==>SESSIONID:"+session.getAttribute("SESSIONID"));
         throw new ValidException("token验证无效");
-
     }
 
 }

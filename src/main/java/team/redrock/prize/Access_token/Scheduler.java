@@ -82,11 +82,9 @@ private String WX_APPSECRET;
     public String getAccess_Token() {
             String access_token =  redisTokenHelper.getObject("global_token");
             if (access_token.equals("1")) {
-                System.out.println("获取access_token");
 //            getAccessToken();
                 getAccessTokenApi();
                 access_token = (String) redisTokenHelper.getObject("global_token");
-                System.out.println("accesstoken"+access_token);
             }
             return (String) access_token;
     }
@@ -94,7 +92,7 @@ private String WX_APPSECRET;
 
 
     public  String getAccessTokenApi() {
-        System.out.println("------------------------getaccessTokenApi()-------------------------");
+//        System.out.println("------------------------getaccessTokenApi()-------------------------");
         String access_token = null;
 
         URL urlGet = null;
@@ -116,12 +114,13 @@ private String WX_APPSECRET;
             byte[] jsonBytes = new byte[size];
             is.read(jsonBytes);
             String message = new String(jsonBytes, "UTF-8");
+
             JSONObject demoJson = JSONObject.fromObject(message);
 
             System.out.println("message:"+message);
             if(demoJson.getString("status").equals("200")){
                 access_token = demoJson.getString("data");
-                log.info("data = "+access_token);
+
                 redisTokenHelper.save("global_token", access_token);
             }else{
                 log.error("获取AccessToken失败");
@@ -132,19 +131,16 @@ private String WX_APPSECRET;
 
         } catch (Exception e) {
             e.printStackTrace();
+
         }
 
-        log.info("getAccesstoken"+access_token);
+        log.info("getAccesstoken=>"+access_token);
 
 
         return access_token;
     }
 
-//
-////    public static void main(String[] args) {
-////        String token = getAccessTokenApi();
-////        System.out.println("getaccesstoken="+token);
-////    }
+
 
 
 

@@ -38,7 +38,7 @@ public interface ActivityMapper {
             @Result(property = "urls",column = "actname",
                     many =@Many(select = "team.redrock.prize.mapper.ActivityMapper.SelectUrl"))
     })
-    @Select("Select actname,founder,status,time,actid from activity group by actname,founder,status,time,actid")
+    @Select("Select actname,founder,status,time,actid from activity group by actname,founder,status,actid")
     List<ShowAct> SelectActAll();
 
     @Delete("Delete from specified_type where actid = #{actid}")
@@ -50,11 +50,16 @@ public interface ActivityMapper {
     @Select("Select ifnull((Select reward from activity where actid = #{actid}and rewardID = #{rewardID}),'')")
     String SelectReward(@Param("actid")String actid,@Param("rewardID")String rewardID);
 
-    @Update("update activity set url =#{url} where actid = #{actid} and rewardID=#{rewardID}")
-    int UpdateActUrl(@Param("actid") String actid,@Param("url") String acturl,@Param("rewardID") String rewardID);
+    @Update("update activity set url =#{url} where actid = #{actid} and reward=#{reward}")
+    int UpdateActUrl(@Param("actid") String actid,@Param("url") String acturl,@Param("reward") String reward);
 
+    @Update("update activity set status = #{status} where actid = #{actid}")
+    int UpdateActStatus(@Param("actid") String actid,@Param("status") int status);
 
     @Select("select reward ,url from activity where actname = #{actname}")
      Acturl SelectUrl(@Param("actname")String actname);
+
+    @Select("select status from activity where actid = #{actid}")
+    List<Integer> SelectStatus(@Param("actid")String actid);
 
 }

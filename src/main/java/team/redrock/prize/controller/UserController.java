@@ -14,7 +14,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @RestController
-public class UserController {
+
+class UserController {
     @Autowired
     UserService userService;
 
@@ -22,21 +23,21 @@ public class UserController {
     public UserResponse userLogin(@RequestParam(value = "username",defaultValue = "") String username, @RequestParam(value = "password",defaultValue = "") String password, HttpServletRequest request, HttpServletResponse response) throws ValidException {
 
 
-        System.out.println("到这里了");
+
         UserResponse userResponse = userService.Login(username,password,request,response);
-        int status = userResponse.getStatus();
-        switch(status){
-            case -1:
-                throw new ValidException("Username checks invalid");
-            case  -2:
-                throw new ValidException("Password cannot be null");
-            case  -3:
-                throw new ValidException("Username doesn't exist");
-            case  -4:
-                throw new ValidException("Password checks invalid");
-            default:
-                break;
-        }
+//        int status = userResponse.getStatus();
+//        switch(status){
+//            case -1:
+//                throw new ValidException("Username checks invalid");
+//            case  -2:
+//                throw new ValidException("Password cannot be null");
+//            case  -3:
+//                throw new ValidException("Username doesn't exist");
+//            case  -4:
+//                throw new ValidException("Password checks invalid");
+//            default:
+//                break;
+//        }
         return userResponse;
 
     }

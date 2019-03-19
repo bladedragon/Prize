@@ -33,7 +33,7 @@ if(specifiedAct==null){
     throw new ValidException("Param cannnot be null");
 }
 
-     System.out.println("-------------------------"+System.currentTimeMillis()+"-------------------------------------");
+
      String token = specifiedAct.getToken();
      if(null==token||(!request.getSession().getAttribute("SESSIONID").equals(token))){
          throw new ValidException("token验证无效");
@@ -51,17 +51,17 @@ if(specifiedAct==null){
 
 
      SpecifiedActResponse response = null;
-     long time = System.currentTimeMillis();
-     System.out.println("-----------controller-------------"+System.currentTimeMillis()+"-------------------------------------");
+
+
      try {
          response = specifiedActService.createSpecifiedAct(typeA,typeB, activity, request);
 
-         System.out.println("----------after service---------------"+(System.currentTimeMillis()-time)+"-------------------------------------");
+
      } catch (SQLException e) {
          e.printStackTrace();
          log.error("ZLOG==>Occur SQL_Ecxption!!");
      }
-     System.out.println("-------------------------"+(System.currentTimeMillis()-time)+"-------------------------------------");
+
      return response;
  }
 }

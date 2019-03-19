@@ -22,8 +22,8 @@ public interface GetPrizerMapper {
     @Select("Select * from specified_type where (openid = #{openid}and actid = #{actid}and rewardID =#{rewardID})")
     List<StudentA> findStudentA(@Param(value = "openid") String openid, @Param(value = "actid") String actid,@Param(value = "rewardID") String rewardID);
 
-    @Insert("Insert into non_specified_type (stuname,stuid,actid,openid,add_time,reward,rewardID) value(#{stuname},#{stuid},"+
-            "#{actid},#{openid},#{add_time},#{reward},#{rewardID})")
+    @Insert("Insert into non_specified_type (stuname,stuid,actid,openid,add_time,reward,rewardID,status,push_status) value(#{stuname},#{stuid},"+
+            "#{actid},#{openid},#{add_time},#{reward},#{rewardID},#{status},#{push_status})")
     void insertNonSpecified_type(StudentB student);
 
     @Select("Select * from non_specified_type where openid = #{openid} and actid = #{actid}and rewardID = #{rewardID}")

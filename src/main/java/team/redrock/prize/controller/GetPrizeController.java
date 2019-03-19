@@ -86,22 +86,23 @@ public class GetPrizeController {
             }
 
         String openid = wxUser.getOpenid();
-        log.info("接受到的openid==》"+openid);
-        log.info("接受到的昵称==》"+wxUser.getNickname());
-        log.info("接受到的城市==》"+wxUser.getCity());
-        log.info("接受到的国家==》"+wxUser.getCountry());
-        log.info("接受到的性别==》"+wxUser.getSex());
-        log.info("接受到的unionid==》"+wxUser.getUnionid());
-        log.info("接受到的头像地址=》"+wxUser.getHeadimgurl());
+            log.info("ZLOG==>getObject："+wxUser.equals(""));
+//        log.info("接受到的openid==》"+openid);
+//        log.info("接受到的昵称==》"+wxUser.getNickname());
+//        log.info("接受到的城市==》"+wxUser.getCity());
+//        log.info("接受到的国家==》"+wxUser.getCountry());
+//        log.info("接受到的性别==》"+wxUser.getSex());
+//        log.info("接受到的unionid==》"+wxUser.getUnionid());
+//        log.info("接受到的头像地址=》"+wxUser.getHeadimgurl());
 
         GetPrizeResponse response = getprizeAService.getPrizeA(openid,actid,reward);
 
             if(response.getStatus()==200){
 
-                return "successpage.html";
+                return "success.html";
             }
 
-            return "failpage.html";
+            return "fail.html";
     }
 
     @GetMapping("/getPrizeB/{actid}/{reward}")
@@ -116,10 +117,10 @@ public class GetPrizeController {
 
         if(response.getStatus()==200){
 
-            return "successpage.html";
+            return "success.html";
         }
 
-        return "failpage.html";
+        return "fail.html";
 
 
     }

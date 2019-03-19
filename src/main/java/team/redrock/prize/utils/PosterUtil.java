@@ -1,9 +1,12 @@
 package team.redrock.prize.utils;
 
 import com.alibaba.fastjson.JSON;
-import team.redrock.prize.bean.OpenidResponseBean;
-import team.redrock.prize.bean.StuInfoResponseBean;
-import team.redrock.prize.exception.ValidException;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+import team.redrock.prize.bean.responseBean.OpenidResponseBean;
+import team.redrock.prize.bean.responseBean.StuInfoResponseBean;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -11,23 +14,30 @@ import java.net.URL;
 import java.net.URLEncoder;
 
 
+@Component
+@Slf4j
 public class PosterUtil {
-    //    @Value("${jwzx.verify}")
-//    private String verUrl;
-    private static String verUrl = "http://hongyan.cqupt.edu.cn/MagicLoop/index.php?s=/addon/Api/Api/getOpenidByStuId";
-    private static String getuserinfoUrl="http://hongyan.cqupt.edu.cn/MagicLoop/index.php?s=/addon/Api/Api/bindVerify";
-    private static String timestamp = "1505118409";
-    private static String string = "asdfghjkl";
-    private static String secret = "e49e89f65d0319bdce2d4740c5b2244af2e774e8";
+
+    @Value("${GetOpenidUrl}")
+    private  String verUrl;
+    @Value("${GetuserinfoUrl}")
+    private  String getuserinfoUrl;
+    @Value("${PosterUtil.timestamp}")
+    private   String timestamp;
+    @Value("${PosterUtil.string}")
+    private   String string;
+    @Value("${PosterUtil.secret}")
+    private  String secret;
+
 
     /**
      * 查询成绩身份验证
      *
      * @return
      */
-    public static String getOpenID(String stuId) {
 
-        System.out.println("调用此处"+stuId);
+    public String getOpenID(String stuId){
+
         PrintWriter out = null;
         BufferedReader reader = null;
         HttpURLConnection connection = null;
@@ -76,8 +86,12 @@ public class PosterUtil {
         OpenidResponseBean object = null;
 try{
      object = JSON.parseObject(builder.toString(), OpenidResponseBean.class);
+
 }catch (NullPointerException e){
     e.printStackTrace();
+    log.error("ZLOG==>NullPointerError");
+    log.error(e.toString());
+
     return "0";
 }
 
@@ -86,9 +100,8 @@ try{
             openid = object.getOpenid().get(0);
         }
 
-
+        log.info("return openid:"+openid);
         return openid;
-
 
     }
 
@@ -99,7 +112,7 @@ try{
      * @return
      */
 
-    public static StuInfoResponseBean getStuInfo(String openId){
+    public  StuInfoResponseBean getStuInfo(String openId){
 
         PrintWriter out = null;
         BufferedReader reader = null;
@@ -149,4 +162,6 @@ try{
 
         return object;
     }
+
+
 }

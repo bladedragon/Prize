@@ -14,7 +14,7 @@ public class ShowTempService {
 
     public ShowTempReponse showTemp(String actid){
 
-    TempAct tempAct = tempActRedisTemplate.opsForValue().get(actid);
+    TempAct tempAct = tempActRedisTemplate.opsForValue().get("CACHE_"+actid);
 
     if(tempAct==null){
 

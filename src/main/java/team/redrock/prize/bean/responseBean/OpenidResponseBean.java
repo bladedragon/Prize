@@ -1,4 +1,4 @@
-package team.redrock.prize.bean;
+package team.redrock.prize.bean.responseBean;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

@@ -3,7 +3,7 @@ package team.redrock.prize.service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import team.redrock.prize.bean.StuInfoResponseBean;
+import team.redrock.prize.bean.responseBean.StuInfoResponseBean;
 import team.redrock.prize.bean.StudentA;
 import team.redrock.prize.bean.StudentB;
 
@@ -30,18 +30,26 @@ public class GetprizeAService {
     SpecifiedTypeMapper specifiedTypeMapper;
     @Autowired
     ActivityMapper activityMapper;
+    @Autowired
+    PosterUtil posterUtil;
 
     public GetPrizeResponse getPrizeA(String openid,String actid,String rewardid ){
 
         System.out.println(rewardid);
         List<StudentA> students = getPrizerMapper.findStudentA(openid,actid,rewardid);
-        System.out.println(students);
-        log.error(String.valueOf(students));
+
+
 
         String reward = activityMapper.SelectReward(actid,rewardid);
 
         if(null==reward||reward.equals("")){
             return new GetPrizeResponse(-4,"Can't find activity or reward");
+        }
+
+        List<Integer> statuses = activityMapper.SelectStatus(actid);
+
+        if(statuses.get(0)==3){
+            return new GetPrizeResponse(-5,"Activity has ended");
         }
 
         if(null==students||students.size()==0){
@@ -78,6 +86,12 @@ public class GetprizeAService {
             return new GetPrizeResponse(-4,"Can't find activity or reward");
         }
 
+        List<Integer> statuses = activityMapper.SelectStatus(actid);
+
+        if(statuses.get(0)==3){
+            return new GetPrizeResponse(-5,"Activity has ended");
+        }
+
         StuInfoResponseBean sirbean;
         StudentB studentB = getPrizerMapper.findStudentB(openid,actid,rewardid);
         SimpleDateFormat f_date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -86,16 +100,16 @@ public class GetprizeAService {
         if(studentB!=null){
             return new GetPrizeResponse(1,"Fail to get again ");
         }else{
-            sirbean = PosterUtil.getStuInfo(openid);
+            sirbean = posterUtil.getStuInfo(openid);
             if(null==sirbean||sirbean.equals("")){
                 log.error("ZLOG==>Fail to use Api");
                 throw new ValidException("Fail to get stuNum");
             }
 
-            log.info("真实姓名为==》"+sirbean.getRealname());
+
             log.info("info==》"+sirbean.getInfo());
 
-            getPrizerMapper.insertNonSpecified_type(new StudentB(sirbean.getRealname(),sirbean.getStuId(),openid,actid,date,reward,rewardid));
+            getPrizerMapper.insertNonSpecified_type(new StudentB(sirbean.getRealname(),sirbean.getStuId(),openid,actid,date,reward,rewardid,1,0));
 
             return new GetPrizeResponse(200,"success");
         }

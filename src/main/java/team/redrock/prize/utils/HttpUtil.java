@@ -73,8 +73,4 @@ public class HttpUtil {
 
     }
 
-
-    public static void main(String[] args) {
-
-    }
 }

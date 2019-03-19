@@ -9,10 +9,12 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 
 
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 import team.redrock.prize.bean.TempAct;
 
 
 import java.net.UnknownHostException;
+import java.util.Set;
 
 @Configuration
 public class RedisConfig {
@@ -31,6 +33,18 @@ public class RedisConfig {
     }
 
     @Bean
+    public RedisTemplate<String, TempAct> tempActSringRedisTemplate(
+            RedisConnectionFactory redisConnectionFactory) {
+        RedisTemplate<String, TempAct> template = new RedisTemplate<String, TempAct>();
+        template.setConnectionFactory(redisConnectionFactory);
+        //使用json的序列化器
+        StringRedisSerializer ser = new StringRedisSerializer();
+//        JdkSerializationRedisSerializer ser = new JdkSerializationRedisSerializer();
+        template.setDefaultSerializer(ser);                 //相当于key的序列化类型和value的序列化类型
+        return template;
+    }
+
+    @Bean
     public RedisTemplate<String, String> StringRedistemplate(
             RedisConnectionFactory redisConnectionFactory) throws UnknownHostException {
         RedisTemplate<String, String> template = new RedisTemplate<String, String>();
@@ -41,6 +55,8 @@ public class RedisConfig {
         template.setDefaultSerializer(ser);                 //相当于key的序列化类型和value的序列化类型
         return template;
     }
+
+
 }
 
 

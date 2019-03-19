@@ -1,9 +1,6 @@
 package team.redrock.prize.mapper;
 
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import team.redrock.prize.bean.StudentA;
@@ -27,6 +24,8 @@ public interface SpecifiedTypeMapper {
     @Select("select * from non_specified_type where  actid = #{actid}") // 查询所有
     List<StudentB> findStudentB(String actid);
 
+    @Update("update specified_type set push_status =#{push_status} where actid = #{actid} and rewardID = #{rewardID} and stuid = #{stuid}")
+    Boolean updatePush_status(@Param(value = "push_status") int push_status, @Param(value = "actid") String actid,@Param(value = "rewardID")String rewardID,@Param(value = "stuid")String stuid );
 
 
 

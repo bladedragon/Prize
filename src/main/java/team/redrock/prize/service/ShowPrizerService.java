@@ -27,11 +27,9 @@ public class ShowPrizerService {
         int total;
         PageHelper.startPage(start, pagesize);
         List<StudentA> studentAS = null;
-        List<StudentB> studentBS = null;
 
 
-                studentAS = specifiedTypeMapper.findStudentA(actid);
-
+        studentAS = specifiedTypeMapper.findStudentA(actid);
 
 
                 PageInfo<StudentA> page = new PageInfo(studentAS);
